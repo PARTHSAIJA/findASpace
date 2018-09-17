@@ -1,0 +1,4 @@
+#Mon Sep 17 17:29:31 AEST 2018
+base.0=C\:\\Users\\Luke\\Desktop\\Uni\\Year_3\\Tri3\\SEP\\findASpace\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex

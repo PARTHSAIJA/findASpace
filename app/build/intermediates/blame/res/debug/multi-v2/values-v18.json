@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\Luke\\Desktop\\Uni\\Year_3\\Tri3\\SEP\\findASpace\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v18\\values-v18.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Luke\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0-rc01.aar\\4707e5b614e5b686e10f8bdc3fb134c3\\res\\values-v18\\values-v18.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "48",
+                        "endOffsets": "99"
+                    }
+                }
+            ]
+        }
+    ]
+}
