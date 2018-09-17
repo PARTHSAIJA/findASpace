@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "329417810374",
+    "firebase_url": "https://findaspace-3ada6.firebaseio.com",
+    "project_id": "findaspace-3ada6",
+    "storage_bucket": "findaspace-3ada6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329417810374:android:b5d1b36fb5021c72",
+        "android_client_info": {
+          "package_name": "com.findaspace.findaspace.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329417810374-n13tg53en3c6u6l7c3sq50dageuqmtqf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.findaspace.findaspace.app",
+            "certificate_hash": "c51edbbbcd192ede8d1dc745caa5ba9845405c22"
+          }
+        },
+        {
+          "client_id": "329417810374-k4lr3qm13hne8de84ha74lhtp6hou4so.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.findaspace.findaspace.app",
+            "certificate_hash": "5399a922f0e6fa11b7effaf07c6eb3e08c29e5e4"
+          }
+        },
+        {
+          "client_id": "329417810374-g58qcq3gd0dtt1m8na7cirt4tff8et5b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.findaspace.findaspace.app",
+            "certificate_hash": "ca225ef54139dc073fa9624e0b18f436a136665a"
+          }
+        },
+        {
+          "client_id": "329417810374-4l7rba485m3kdnd1ni9ab6u3uhoq6qpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX82Z5Ae5I7tD3ApnQM8RYWzDk2D2jGIo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329417810374-4l7rba485m3kdnd1ni9ab6u3uhoq6qpr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
