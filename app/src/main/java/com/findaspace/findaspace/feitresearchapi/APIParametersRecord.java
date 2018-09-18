@@ -7,13 +7,33 @@ public class APIParametersRecord {
     public String rFamily;
     public String rSensor;
     public String rSubSensor;
+    public String rBuilding;
+    public String rRoom;
 
-    public APIParametersRecord(String rFromDate, String rToDate, String rFamily, String rSensor, String rSubSensor) {
+    public APIParametersRecord(String rFromDate, String rToDate, String rFamily, String rSensor, String rSubSensor, String rBuilding, String rRoom) {
         this.rFromDate = rFromDate;
         this.rToDate = rToDate;
         this.rFamily = rFamily;
         this.rSensor = rSensor;
         this.rSubSensor = rSubSensor;
+        this.rBuilding = rBuilding;
+        this.rRoom = rRoom;
+    }
+
+    public String getrBuilding() {
+        return rBuilding;
+    }
+
+    public void setrBuilding(String rBuilding) {
+        this.rBuilding = rBuilding;
+    }
+
+    public String getrRoom() {
+        return rRoom;
+    }
+
+    public void setrRoom(String rRoom) {
+        this.rRoom = rRoom;
     }
 
     public String getrFromDate(String rFromDate) {
