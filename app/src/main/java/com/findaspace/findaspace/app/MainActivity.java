@@ -3,12 +3,15 @@ package com.findaspace.findaspace.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
@@ -33,6 +36,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         submitButton();
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //preventing default implementation previous to android.os.Build.VERSION_CODES.ECLAIR
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(MainActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 
     //Performing action onItemSelected and onNothing selected
