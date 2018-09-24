@@ -28,17 +28,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Spinner spin = (Spinner) findViewById(R.id.spinnerBuilding);
         spin.setOnItemSelectedListener(this);
 
-//Creating the ArrayAdapter instance having the bank name list
+
+
+        //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,buildingNo);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//Setting the ArrayAdapter data on the Spinner
+        //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
         submitButton();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME) {
             //preventing default implementation previous to android.os.Build.VERSION_CODES.ECLAIR
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(MainActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
