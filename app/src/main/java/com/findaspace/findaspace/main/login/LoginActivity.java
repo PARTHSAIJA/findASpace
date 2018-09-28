@@ -1,4 +1,4 @@
-package com.findaspace.findaspace.app;
+package com.findaspace.findaspace.main.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,19 +10,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.findaspace.findaspace.main.search.SearchActivity;
+import com.findaspace.findaspace.app.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
-public class loginPage extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static EditText emailTxt;
     private static EditText passwordTxt;
@@ -61,7 +58,7 @@ public class loginPage extends AppCompatActivity implements View.OnClickListener
         updateStatus();
     }
 
-    private void signUserIn(){
+    private void signUserInWithEmail(){
         String email = emailTxt.getText().toString();
         String password = passwordTxt.getText().toString();
 
@@ -74,7 +71,7 @@ public class loginPage extends AppCompatActivity implements View.OnClickListener
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                Intent intent = new Intent(loginPage.this, MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
                                 startActivity(intent);
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -109,11 +106,11 @@ public class loginPage extends AppCompatActivity implements View.OnClickListener
 
         if(user != null)
         {
-            Toast.makeText(loginPage.this, "Signed in: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Signed in: " + user.getEmail(), Toast.LENGTH_SHORT).show();
         }
         else
         {
-            Toast.makeText(loginPage.this, "Signed out" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Signed out" , Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -124,7 +121,7 @@ public class loginPage extends AppCompatActivity implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.btnLogin:
-                signUserIn();
+                signUserInWithEmail();
                 break;
         }
     }

@@ -1,4 +1,4 @@
-package com.findaspace.findaspace.app;
+package com.findaspace.findaspace.main.search;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,14 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.findaspace.findaspace.app.R;
+import com.findaspace.findaspace.main.member.MemberActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class SearchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "SearchActivity";
     private static Button submit_button;
 
     String[] buildingNo={"CB1","CB2","CB3","CB4","CB5","CB6","CB7","CB8","CB9","CB10","CB11"};
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME) {
             //preventing default implementation previous to android.os.Build.VERSION_CODES.ECLAIR
             FirebaseAuth.getInstance().signOut();
-            Toast.makeText(MainActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SearchActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this,studentView.class);
+                        Intent intent = new Intent(SearchActivity.this,MemberActivity.class);
                         startActivity(intent);
                     }
                 }

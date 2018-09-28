@@ -1,4 +1,4 @@
-package com.findaspace.findaspace.app;
+package com.findaspace.findaspace.main.search;
 
 public class RoomRecord {
 

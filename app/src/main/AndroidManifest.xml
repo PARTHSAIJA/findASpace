@@ -12,7 +12,7 @@
         <meta-data
             android:name="aia-compat-api-min-version"
             android:value="1" />
-        <activity android:name="loginPage">
+        <activity android:name="com.findaspace.findaspace.main.base.BaseActivity">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.findaspace.findaspace.main.login.LoginActivity">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -32,7 +32,7 @@
                 <data android:host="findaspace.com" android:pathPattern="/.*" android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".studentView">
+        <activity android:name="com.findaspace.findaspace.main.search.SearchActivity">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -40,7 +40,15 @@
                 <data android:host="findaspace.com" android:pathPattern="/.*" android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".adminPage">
+        <activity android:name="com.findaspace.findaspace.main.member.MemberActivity">
+            <intent-filter android:order="1">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:host="findaspace.com" android:pathPattern="/.*" android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.findaspace.findaspace.main.admin.AdminActivity">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
