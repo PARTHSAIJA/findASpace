@@ -1,5 +1,9 @@
 package com.findaspace.findaspace.readDB;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -8,21 +12,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 
-public class UTSRooms {
+public class UTSRooms{
 
-    private FirebaseDatabase database;
-    private DatabaseReference refDb;
+    private static final String TAG = "SearchActivity";
 
     public String[] getAllRooms(){
 
         final LinkedList<String> rooms = new LinkedList<>();
 
-        database = FirebaseDatabase.getInstance();
-        refDb = database.getReference();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference refDb = database.getReference();
 
-        refDb.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        readData(refDb.child("room"), new OnGetDataListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onSuccess(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     int i = 0;
                     for(DataSnapshot d : dataSnapshot.getChildren()) {
@@ -30,15 +34,35 @@ public class UTSRooms {
                         i++;
                     }
                 }
-            }//onDataChange
+            }
+            @Override
+            public void onStart() {
+                //when starting
+                Log.d(TAG, "onStart-Started");
+            }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-
-            }//onCancelled
+            public void onFailure() {
+                Log.d(TAG, "onFailure-Failed");
+            }
         });
 
-
         return null;
+    }
+
+    public void readData(DatabaseReference ref, final OnGetDataListener listener) {
+        listener.onStart();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+            
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listener.onFailure();
+            }
+        });
+
     }
 }

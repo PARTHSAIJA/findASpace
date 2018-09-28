@@ -30,8 +30,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         Spinner spin = (Spinner) findViewById(R.id.spinnerBuilding);
         spin.setOnItemSelectedListener(this);
 
-
-
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,buildingNo);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
