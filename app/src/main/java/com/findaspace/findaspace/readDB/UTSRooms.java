@@ -10,7 +10,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.math.BigInteger;
 import java.util.LinkedList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UTSRooms{
 
@@ -24,12 +27,15 @@ public class UTSRooms{
         DatabaseReference refDb = database.getReference();
 
 
-        readData(refDb.child("room"), new OnGetDataListener() {
+
+        readData(refDb.child("Room"), new OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "Starting search");
                 if (dataSnapshot.exists()) {
                     int i = 0;
                     for(DataSnapshot d : dataSnapshot.getChildren()) {
+                        Log.d(TAG, "room: " + d.getKey());
                         rooms.add(d.getKey());
                         i++;
                     }
@@ -47,22 +53,32 @@ public class UTSRooms{
             }
         });
 
-        return null;
+
+
+        String[] roomKey = new String[rooms.size()];
+        for(int i=0; i <= rooms.size(); i++){
+            roomKey[i] = rooms.get(i);
+        }
+
+        return roomKey;
     }
 
     public void readData(DatabaseReference ref, final OnGetDataListener listener) {
         listener.onStart();
+        final CountDownLatch done = new CountDownLatch(1);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "->onDataChange");
                 listener.onSuccess(dataSnapshot);
+                done.countDown();
             }
-            
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "->onCancelled");
                 listener.onFailure();
             }
         });
-
     }
 }

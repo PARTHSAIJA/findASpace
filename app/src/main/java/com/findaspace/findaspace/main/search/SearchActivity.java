@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.findaspace.findaspace.app.R;
 import com.findaspace.findaspace.main.member.MemberActivity;
+import com.findaspace.findaspace.readDB.UTSRooms;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -30,8 +31,11 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         Spinner spin = (Spinner) findViewById(R.id.spinnerBuilding);
         spin.setOnItemSelectedListener(this);
 
+        UTSRooms dbRooms = new UTSRooms();
+        String[] roomsUTS = dbRooms.getAllRooms();
+
         //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,buildingNo);
+        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,roomsUTS);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
