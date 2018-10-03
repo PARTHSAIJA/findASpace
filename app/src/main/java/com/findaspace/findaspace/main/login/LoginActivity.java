@@ -35,34 +35,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
 
         findViewById(R.id.btnLogin).setOnClickListener(this);
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference refDb = database.getReference();
-//        refDb.child("Room").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Log.d(TAG, "Starting search");
-//                if (dataSnapshot.exists()) {
-//                    int i = 0;
-//                    for(DataSnapshot d : dataSnapshot.getChildren()) {
-//                        Log.d(TAG, "room: " + d.getKey());
-//                        System.out.println("room: " + d.getKey().toString());
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.d(TAG, "->onCancelled");
-//                System.out.println("room: cancelled");
-//            }
-//        });
-
-
 
         emailTxt = (EditText)findViewById(R.id.editText3);
         passwordTxt = (EditText)findViewById(R.id.editText4);
@@ -87,6 +68,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         updateStatus();
     }
 
+    /**
+     *
+     */
     private void signUserInWithEmail(){
         String email = emailTxt.getText().toString();
         String password = passwordTxt.getText().toString();
@@ -130,6 +114,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /**
+     *
+     */
     private void updateStatus() {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -143,8 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -154,24 +139,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-
-    //WRITE TO DB
-        /*
-         * Retrieve an instance of your database using getInstance()
-         * and reference the location you want to write to.
-         *
-         * You can save a range of data types to the database this way, including Java objects.
-         * When you save an object the responses from any getters will be saved as children of
-         * this location.
-         */
-        // Write a message to the database
-        //FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //DatabaseReference myRef = database.getReference("message");
-
-        //myRef.setValue("Hello, World!");
-
-
-
-
 }
 

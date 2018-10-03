@@ -3,37 +3,33 @@ package com.findaspace.findaspace.readDB;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.findaspace.findaspace.main.member.MemberActivity;
 import com.findaspace.findaspace.main.search.SearchActivity;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.math.BigInteger;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UTSRooms{
 
     private static final String TAG = "SearchActivity";
+    private MemberActivity activity;
 
-
-    private SearchActivity activity;
-
-    public UTSRooms(SearchActivity activity) {
+    /**
+     *
+     * @param activity
+     */
+    public UTSRooms(MemberActivity activity) {
         this.activity = activity;
     }
 
+    /**
+     *
+     * @throws InterruptedException
+     */
     public void getAllRooms() throws InterruptedException {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -49,12 +45,12 @@ public class UTSRooms{
                     int i = 0;
                     for(DataSnapshot d : dataSnapshot.getChildren()) {
                         Log.d(TAG, "room:" + d.getKey());
-                        rooms.add(d.getKey().toString());
+                        rooms.add(d.getKey());
                         i++;
                     }
                 }
                 String[] formattedRooms = FormatRooms(rooms);
-                activity.setBuilding(formattedRooms);
+                activity.setRoomsUTS(formattedRooms);
             }
             @Override
             public void onStart() {
@@ -69,14 +65,23 @@ public class UTSRooms{
         });
     }
 
+    /**
+     * @brief This method applies the UTS formatting to the rooms
+     * @param dbRoomsList
+     * @return
+     */
     private String[] FormatRooms(LinkedList<String> dbRoomsList) {
 
         String[] formattedRooms = new String[dbRoomsList.size()];
 
         for(int i=0; i < dbRoomsList.size(); i++) {
+            //Get just the building number
             String roomBuilding = ((dbRoomsList.get(i)).substring(2)).substring(0, Math.min((dbRoomsList.get(i)).substring(2).length(), 2));
+            //Get just the level number
             String roomLvl = ((dbRoomsList.get(i)).substring(4)).substring(0, Math.min((dbRoomsList.get(i)).substring(4).length(), 2));
+            //Get just the room
             String roomNo = (dbRoomsList.get(i)).substring(6);
+            //Add UTS room formatting
             formattedRooms[i] = "CB" + roomBuilding + "." + roomLvl + "." + roomNo;
             Log.w(TAG, "CB" + roomBuilding + "." + roomLvl + "." + roomNo);
         }
@@ -84,7 +89,11 @@ public class UTSRooms{
         return formattedRooms;
     }
 
-
+    /**
+     *
+     * @param ref
+     * @param listener
+     */
     public void readData(DatabaseReference ref, final OnGetDataListener listener) {
         listener.onStart();
         ref.addValueEventListener(new ValueEventListener() {
@@ -92,7 +101,6 @@ public class UTSRooms{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "->onDataChange");
                 listener.onSuccess(dataSnapshot);
-
             }
 
             @Override
