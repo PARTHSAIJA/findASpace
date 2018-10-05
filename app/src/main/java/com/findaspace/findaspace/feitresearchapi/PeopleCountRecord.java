@@ -3,19 +3,19 @@ package com.findaspace.findaspace.feitresearchapi;
 import java.util.Date;
 
 public class PeopleCountRecord {
-    public Date RecordDateTime;
+    public String RecordDateTime;
     public Integer RecordPeopleCount;
 
-    public PeopleCountRecord(Date recordDateTime, Integer recordPeopleCount) {
+    public PeopleCountRecord(String recordDateTime, Integer recordPeopleCount) {
         RecordDateTime = recordDateTime;
         RecordPeopleCount = recordPeopleCount;
     }
 
-    public Date getRecordDateTime() {
+    public String getRecordDateTime() {
         return RecordDateTime;
     }
 
-    public void setRecordDateTime(Date recordDateTime) {
+    public void setRecordDateTime(String recordDateTime) {
         RecordDateTime = recordDateTime;
     }
 
