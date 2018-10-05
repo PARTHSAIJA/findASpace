@@ -2,7 +2,6 @@ package com.findaspace.findaspace.main.member;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.findaspace.findaspace.app.R;
@@ -47,6 +46,7 @@ public class MemberActivity extends Activity
 
         //Get all the rooms
         callAsyncGetRooms();
+        //while(roomsUTS.length > 0);
         //Go through and get all the rooms associated with the building number the user selected. In this fill the RoomRecord.java
         sortRoomsForSelectedBuilding();
         //Create API request for each room to determine how many in the room
@@ -78,6 +78,8 @@ public class MemberActivity extends Activity
     private void sortRoomsForSelectedBuilding() {
         //TODO: Go through and get all the rooms associated with the building number the user selected. In this fill the RoomRecord.java
     }
+
+
 
     /**
      * @brief

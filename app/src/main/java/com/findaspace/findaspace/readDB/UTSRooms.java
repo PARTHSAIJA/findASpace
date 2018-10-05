@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.findaspace.findaspace.main.member.MemberActivity;
-import com.findaspace.findaspace.main.search.SearchActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,7 +65,7 @@ public class UTSRooms{
     }
 
     /**
-     * @brief This method applies the UTS formatting to the rooms
+     * @brief This method applies the UTS formatting to the rooms (CB1105404 -> CB11.05.404)
      * @param dbRoomsList
      * @return
      */
