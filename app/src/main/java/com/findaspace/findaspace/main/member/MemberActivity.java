@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.findaspace.findaspace.app.R;
+import com.findaspace.findaspace.feitresearchapi.CallAPIPeopleCount;
 import com.findaspace.findaspace.readDB.UTSRooms;
 
 public class MemberActivity extends Activity
@@ -45,7 +46,8 @@ public class MemberActivity extends Activity
         simpleList = (ListView)findViewById(R.id.simpleListView);
 
         //Get all the rooms
-        callAsyncGetRooms();
+        CallAPIPeopleCount callAPI = new CallAPIPeopleCount();
+        callAPI.CallAPIPeopleCount();
         //while(roomsUTS.length > 0);
         //Go through and get all the rooms associated with the building number the user selected. In this fill the RoomRecord.java
         sortRoomsForSelectedBuilding();

@@ -2,6 +2,9 @@ package com.findaspace.findaspace.feitresearchapi;
 
 public class CallAPIPeopleCount implements AsyncCallTaskResponse{
 
+    /**
+     * @brief Create API request for each room to determine how many in the room
+     */
     public void CallAPIPeopleCount(){
 
         new AsyncCallTask(this).execute();

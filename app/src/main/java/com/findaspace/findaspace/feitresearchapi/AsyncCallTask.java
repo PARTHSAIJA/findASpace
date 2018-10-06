@@ -2,29 +2,17 @@ package com.findaspace.findaspace.feitresearchapi;
 
 import android.os.AsyncTask;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AsyncCallTask extends AsyncTask<Void, Void, String> {
 
@@ -34,11 +22,15 @@ public class AsyncCallTask extends AsyncTask<Void, Void, String> {
         this.delegate = delegate;
     }
 
+    /**
+     * @brief
+     * @param voids
+     * @return
+     */
     @Override
     protected String doInBackground(Void... voids) {
-
-
         try{
+            //TODO: Currently API URL hardcoded
             String sensorAPIURL = "http://eif-research.feit.uts.edu.au/api/json/?rFromDate=2018-09-16T18%3A05%3A00&rToDate=2018-09-18T18%3A05%3A00&rFamily=people&rSensor=+PC00.08+%28In%29";
 
             URL url = new URL(sensorAPIURL);
@@ -48,69 +40,42 @@ public class AsyncCallTask extends AsyncTask<Void, Void, String> {
             InputStream inputstream = connection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputstream));
 
-            StringBuilder stringbuffer = new StringBuilder();
+            StringBuilder strBuilder = new StringBuilder();
 
-            String line = "";
+            String line;
             while ((line = bufferedReader.readLine()) != null) {
-                stringbuffer.append(line);
+                strBuilder.append(line);
             }
 
-            //Type myListType = new TypeToken<List<PeopleCountRecord>>(){}.getType();
-            //List<PeopleCountRecord> myList = new Gson().fromJson(stringbuffer.toString(), myListType);
-
-//            for (Object f: myList) {
-//                System.out.println("TEST:" + f.toString());
-//            }
-
-            JsonElement je = new JsonParser().parse(stringbuffer.toString());
+            JsonElement je = new JsonParser().parse(strBuilder.toString());
             JsonArray myArray = je.getAsJsonArray();
 
-            for (JsonElement e : myArray)
-            {
-                // Access the element as a JsonObject
-                //JsonObject jo = e.getAsJsonObject();
-                //System.out.println(jo.keySet());
-//                // Get the `timestamp` element from the object
-//                // since it's a number, we get it as a JsonPrimitive
-//                JsonPrimitive tsPrimitive = jo.getAsJsonPrimitive("timestamp");
-//
-//                // get the primitive as a Java long
-//                long timestamp = tsPrimitive.getAsLong();
-//                System.out.println("Timestamp: " + timestamp);
-            }
+            //["2018-09-18 18:00:00",88]
+            System.out.println("OUTPUT: " + myArray.get(myArray.size()-1).isJsonObject());
+            System.out.println("OUTPUT_JSON_Object: " + myArray.get(myArray.size()-1));
+            String currentPeopleCountStr = myArray.get(myArray.size()-1).toString();
 
+            String [] dateStrToken = currentPeopleCountStr.split ("\"");
+            String dateStr = dateStrToken[1];
+            System.out.println("OUTPUT_Date: " + dateStr);
+
+//            Date date = new Date();
+//            String stringDate = DateFormat.getDateTimeInstance().format(dateStr);
+//            @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            df.parse(dateStr);
 //
-//            String finalJson = stringbuffer.toString();
-//
-//            JSONObject parentObject = new JSONObject(finalJson);
-//            JSONArray parentArray = parentObject.getJSONArray("items");
-//
-//            List<PeopleCountRecord> PeopleCountRecordList = new ArrayList<>();
-//            String idText = null;
-//            Gson gson = new Gson();
-//            for(int i=0; i<parentArray.size(); i++){
-//                JsonObject finalObject = parentArray.(i);
-//
-//                PeopleCountRecord PeopleCountRecord = gson.fromJson(finalObject.toString(),PeopleCountRecord.class);
-//
-//                PeopleCountRecordList.add(PeopleCountRecord);
+//            //Date date = new Date(df.);
+//            System.out.println("OUTPUT_Time: " + DateFormat.getTimeInstance(DateFormat.MEDIUM).format(dateStr));
+
+            String peopleCountStr = (currentPeopleCountStr.substring(0, currentPeopleCountStr.length() - 1));
+            peopleCountStr = peopleCountStr.substring(peopleCountStr.lastIndexOf(",") + 1);
+            System.out.println("OUTPUT_PeopleCount: " + peopleCountStr);
+            //JSONObject obj = new JSONObject(myArray.get(myArray.size()-1));
+
+//            for (JsonElement e : myArray)
+//            {
+//                System.out.println("Object:"+e.isJsonObject());
 //            }
-
-            // Connect to the URL using java's native library
-//             URL url = new URL(sensorAPIURL);
-//             URLConnection request = url.openConnection();
-//             try {
-//                request.connect();
-//             } catch (Exception e) {
-//                System.out.println("ERROR ->" + e.getMessage());
-//                e.printStackTrace();
-//             }
-             // Convert to a JSON object to print data
-//             JsonParser jp = new JsonParser(); //from gson
-//             JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
-//             JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
-//             //String zipcode = rootobj.get("zip_code").getAsString(); //just grab the zipcode
-//             System.out.println("KEY ->" + rootobj.keySet());
 
              return null;
          } catch (MalformedURLException e) {
@@ -127,61 +92,4 @@ public class AsyncCallTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String result) {
         delegate.processFinish(result);
     }
-
 }
-
-// try {
-//         String sensorAPIURL = "https://eif-research.feit.uts.edu.au/api/json/?rFromDate=2018-09-16T18%3A05%3A00&rToDate=2018-09-18T18%3A05%3A00&rFamily=people&rSensor=+PC00.08+%28In%29";
-//         URL url = new URL(sensorAPIURL);
-//
-////            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//////            connection.connect();
-//////
-//////            InputStream inputstream = connection.getInputStream();
-//////            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputstream));
-//////
-//////            StringBuffer stringbuffer = new StringBuffer();
-//////
-//////            String line = "";
-//////            while ((line = bufferedReader.readLine()) != null) {
-//////                stringbuffer.append(line);
-//////            }
-//////
-//////            String finalJson = stringbuffer.toString();
-//////
-//////            JSONObject parentObject = new JSONObject(finalJson);
-//////            JSONArray parentArray = parentObject.getJSONArray("items");
-//////
-//////            List<BookInfoModel> bookInfoModelList = new ArrayList<>();
-//////            String idText = null;
-//////            Gson gson = new Gson();
-//////            for(int i=0; i<parentArray.length(); i++){
-//////                JSONObject finalObject = parentArray.getJSONObject(i);
-//////
-//////                BookInfoModel bookInfoModel = new gson.fromJson(finalObject.toString(),BookInfoModel.class);
-//////
-//////                bookInfoModelList.add(bookInfoModel);
-//////            }
-//
-//         //         // Connect to the URL using java's native library
-//         //URL url = new URL(sensorAPIURL);
-//         URLConnection request = url.openConnection();
-//         try {
-//         request.connect();
-//         } catch (Exception e) {
-//         System.out.println("ERROR ->" + e.getMessage());
-//         e.printStackTrace();
-//         }
-//         // Convert to a JSON object to print data
-//         JsonParser jp = new JsonParser(); //from gson
-//         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
-//         JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
-//         //String zipcode = rootobj.get("zip_code").getAsString(); //just grab the zipcode
-//         System.out.println(rootobj.keySet());
-//
-//         return null;
-//         } catch (MalformedURLException e) {
-//         e.printStackTrace();
-//         } catch (IOException e) {
-//         e.printStackTrace();
-//         }
