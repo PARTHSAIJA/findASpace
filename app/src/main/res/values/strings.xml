@@ -4,4 +4,7 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="todo">TODO</string>
+    <string name="room_empty">Empty</string>
+    <string name="room_load_fail">load room fail</string>
+    <string name="login_admin">\@admin</string>
 </resources>

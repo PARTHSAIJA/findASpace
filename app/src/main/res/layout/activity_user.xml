@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:orientation="vertical"
+    tools:context="com.findaspace.findaspace.main.user.UserActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@mipmap/fdlogo" />
+    <!-- block room -->
+    <Button
+        android:id="@+id/user_block_room_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="block room"
+        android:textAllCaps="false"
+        android:textColor="@color/colorRed" />
+
+    <Button
+        android:id="@+id/user_set_parameters_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="set the parameters of the room view"
+        android:textAllCaps="false"
+        android:textColor="@color/colorRed" />
+
+    <Button
+        android:id="@+id/user_add_remove_spaces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Add and remove spaces to the system view"
+        android:textAllCaps="false"
+        android:textColor="@color/colorRed" />
+
+    <Button
+        android:id="@+id/user_build_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="building view"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlack" />
+
+    <Button
+        android:id="@+id/user_notification_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="notification view"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlack" />
+
+
+    <Button
+        android:id="@+id/user_feedback_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Feedback view"
+        android:textAllCaps="false"
+        android:textColor="@color/colorYellow" />
+
+
+    <Button
+        android:id="@+id/user_selection_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="selection view"
+        android:textAllCaps="false"
+        android:textColor="@color/colorYellow" />
+
+
+</LinearLayout>
