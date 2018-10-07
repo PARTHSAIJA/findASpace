@@ -16,6 +16,16 @@ public class UTSRooms{
 
     private static final String TAG = "SearchActivity";
     private MemberActivity activity;
+    private String buildingNumber;
+    public LinkedList<RoomRecord> roomRecord;
+
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber;
+    }
 
     /**
      *
@@ -27,29 +37,52 @@ public class UTSRooms{
 
     /**
      *
-     * @throws InterruptedException
+     * @param buildingNo
      */
-    public void getAllRooms() throws InterruptedException {
-
+    public void getSelectedRoom(String buildingNo) {
+        setBuildingNumber(buildingNo);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference refDb = database.getReference();
 
         final LinkedList<String> rooms = new LinkedList<>();
 
+        //CB1105404
         readData(refDb.child("Room"), new OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "Starting search");
                 if (dataSnapshot.exists()) {
-                    int i = 0;
                     for(DataSnapshot d : dataSnapshot.getChildren()) {
-                        Log.d(TAG, "room:" + d.getKey());
-                        rooms.add(d.getKey());
-                        i++;
+                        if(d.getKey().contains(getBuildingNumber())){
+                            Log.d(TAG, "room:" + d.getKey());
+                            String roomStr = d.getKey();
+                            rooms.add(roomStr);
+                            //Get just the building number
+                            String roomBuilding = ((roomStr).substring(2)).substring(0, Math.min((roomStr).substring(2).length(), 2));
+                            //Get just the level number
+                            String roomLvl = ((roomStr).substring(4)).substring(0, Math.min((roomStr).substring(4).length(), 2));
+                            //Get just the room
+                            String roomNo = (roomStr).substring(6);
+
+                            for(DataSnapshot childOfKey : d.getChildren()){
+                                RoomRecord roomDetails = new RoomRecord
+                                        (
+                                                roomBuilding,
+                                                roomLvl,
+                                                roomNo,
+                                                Boolean.valueOf(childOfKey.child("Blocked").getValue().toString()),
+                                                childOfKey.child("CloseTime").getValue().toString(),
+                                                Integer.valueOf(childOfKey.child("MaxCap").getValue().toString()),
+                                                childOfKey.child("OpenTime").getValue().toString(),
+                                                childOfKey.child("UnitNo").getValue().toString()
+                                        );
+                                roomRecord.add(roomDetails);
+                            }
+                        }
                     }
                 }
-                String[] formattedRooms = FormatRooms(rooms);
-                activity.setRoomsUTS(formattedRooms);
+                //String[] formattedRooms = FormatRooms(rooms);
+                activity.setRoomsUTS(roomRecord);
             }
             @Override
             public void onStart() {
@@ -69,24 +102,24 @@ public class UTSRooms{
      * @param dbRoomsList
      * @return
      */
-    private String[] FormatRooms(LinkedList<String> dbRoomsList) {
-
-        String[] formattedRooms = new String[dbRoomsList.size()];
-
-        for(int i=0; i < dbRoomsList.size(); i++) {
-            //Get just the building number
-            String roomBuilding = ((dbRoomsList.get(i)).substring(2)).substring(0, Math.min((dbRoomsList.get(i)).substring(2).length(), 2));
-            //Get just the level number
-            String roomLvl = ((dbRoomsList.get(i)).substring(4)).substring(0, Math.min((dbRoomsList.get(i)).substring(4).length(), 2));
-            //Get just the room
-            String roomNo = (dbRoomsList.get(i)).substring(6);
-            //Add UTS room formatting
-            formattedRooms[i] = "CB" + roomBuilding + "." + roomLvl + "." + roomNo;
-            Log.w(TAG, "CB" + roomBuilding + "." + roomLvl + "." + roomNo);
-        }
-
-        return formattedRooms;
-    }
+//    private String[] FormatRooms(LinkedList<String> dbRoomsList) {
+//
+//        String[] formattedRooms = new String[dbRoomsList.size()];
+//
+//        for(int i=0; i < dbRoomsList.size(); i++) {
+//            //Get just the building number
+//            String roomBuilding = ((dbRoomsList.get(i)).substring(2)).substring(0, Math.min((dbRoomsList.get(i)).substring(2).length(), 2));
+//            //Get just the level number
+//            String roomLvl = ((dbRoomsList.get(i)).substring(4)).substring(0, Math.min((dbRoomsList.get(i)).substring(4).length(), 2));
+//            //Get just the room
+//            String roomNo = (dbRoomsList.get(i)).substring(6);
+//            //Add UTS room formatting
+//            formattedRooms[i] = "CB" + roomBuilding + "." + roomLvl + "." + roomNo;
+//            Log.w(TAG, "CB" + roomBuilding + "." + roomLvl + "." + roomNo);
+//        }
+//
+//        return formattedRooms;
+//    }
 
     /**
      *

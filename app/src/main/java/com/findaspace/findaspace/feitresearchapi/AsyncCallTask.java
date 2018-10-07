@@ -63,24 +63,10 @@ public class AsyncCallTask extends AsyncTask<Void, Void, String> {
             String dateStr = dateStrToken[1];
             System.out.println("OUTPUT_Date: " + dateStr);
 
-//            Date date = new Date();
-//            String stringDate = DateFormat.getDateTimeInstance().format(dateStr);
-//            @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            df.parse(dateStr);
-//
-//            //Date date = new Date(df.);
-//            System.out.println("OUTPUT_Time: " + DateFormat.getTimeInstance(DateFormat.MEDIUM).format(dateStr));
-
             //Extract the PeopleCount as a String 88
             String peopleCountStr = (currentPeopleCountStr.substring(0, currentPeopleCountStr.length() - 1));
             peopleCountStr = peopleCountStr.substring(peopleCountStr.lastIndexOf(",") + 1);
             System.out.println("OUTPUT_PeopleCount: " + peopleCountStr);
-            //JSONObject obj = new JSONObject(myArray.get(myArray.size()-1));
-
-//            for (JsonElement e : myArray)
-//            {
-//                System.out.println("Object:"+e.isJsonObject());
-//            }
 
              return null;
          } catch (MalformedURLException e) {
