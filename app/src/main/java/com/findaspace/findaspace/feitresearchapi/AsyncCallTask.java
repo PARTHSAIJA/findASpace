@@ -20,6 +20,7 @@ public class AsyncCallTask extends AsyncTask<Void, Void, LinkedList<PeopleCountR
 
     public String datetime;
     public String peopleCount;
+    public LinkedList<PeopleCountRecord> peopleCountRecord;
 
     public String getDatetime() {
         return datetime;
@@ -51,8 +52,8 @@ public class AsyncCallTask extends AsyncTask<Void, Void, LinkedList<PeopleCountR
     @Override
     protected LinkedList<PeopleCountRecord> doInBackground(Void... voids) {
         try{
-            LinkedList<RoomRecord> utsRooms =;
-            for (RoomRecord room:  activity.getRoomsUTS()) {
+            //LinkedList<RoomRecord> utsRooms =;
+            for (RoomRecord room:  delegate.getPeopleCount()) {
                 System.out.println("UNITNO:" + room.UnitNo);
 
 
@@ -97,11 +98,16 @@ public class AsyncCallTask extends AsyncTask<Void, Void, LinkedList<PeopleCountR
                 setDatetime(dateStr);
                 setPeopleCount(peopleCountStr);
 
+                PeopleCountRecord peopleCountDetails = new PeopleCountRecord
+                (
+                        "CB" + room.BuildingNo + room.LevelNo + room.RoomNo,
+                        dateStr,
+                        Integer.valueOf(peopleCountStr)
+                );
+                peopleCountRecord.add(peopleCountDetails);
             }
 
-            PeopleCountRecord roomCount = new PeopleCountRecord (dateStr, Integer.valueOf(peopleCountStr));
-
-            return dateStr, peopleCountStr;
+            return peopleCountRecord;
 
         } catch (MalformedURLException e) {
             System.out.println("ERROR ->" + e.getMessage());

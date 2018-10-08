@@ -8,6 +8,7 @@ import java.util.LinkedList;
 public class CallAPIPeopleCount implements AsyncCallTaskResponse{
 
     private MemberActivity activity;
+    private LinkedList<RoomRecord> roomsUTS;
 
     /**
      *
@@ -22,8 +23,9 @@ public class CallAPIPeopleCount implements AsyncCallTaskResponse{
      * @param roomsUTS
      */
     public void callAPIPeopleCount(LinkedList<RoomRecord> roomsUTS){
-
+        this.roomsUTS = roomsUTS;
         new AsyncCallTask(this).execute();
+
     }
 
     //this override the implemented method from AsyncResponse
@@ -32,5 +34,10 @@ public class CallAPIPeopleCount implements AsyncCallTaskResponse{
         //Here you will receive the result fired from async class
         //of onPostExecute(result) method.
         activity.setPeopleCount(peopleCountRecord);
+    }
+
+    @Override
+    public LinkedList<RoomRecord> getPeopleCount() {
+        return roomsUTS;
     }
 }
