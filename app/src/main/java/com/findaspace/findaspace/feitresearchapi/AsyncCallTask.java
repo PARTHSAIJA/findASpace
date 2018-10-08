@@ -68,6 +68,7 @@ public class AsyncCallTask extends AsyncTask<Void, Void, String> {
             peopleCountStr = peopleCountStr.substring(peopleCountStr.lastIndexOf(",") + 1);
             System.out.println("OUTPUT_PeopleCount: " + peopleCountStr);
 
+
              return null;
          } catch (MalformedURLException e) {
             System.out.println("ERROR ->" + e.getMessage());

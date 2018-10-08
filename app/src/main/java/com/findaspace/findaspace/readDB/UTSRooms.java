@@ -53,7 +53,7 @@ public class UTSRooms{
                 Log.d(TAG, "Starting search");
                 if (dataSnapshot.exists()) {
                     for(DataSnapshot d : dataSnapshot.getChildren()) {
-                        if(d.getKey().contains(getBuildingNumber())){
+                        if(d.getKey().contains("CB" + getBuildingNumber())){
                             Log.d(TAG, "room:" + d.getKey());
                             String roomStr = d.getKey();
                             rooms.add(roomStr);

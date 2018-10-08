@@ -52,6 +52,7 @@ public class MemberActivity extends Activity
         //Get all the rooms
         CallAPIPeopleCount callAPI = new CallAPIPeopleCount();
         callAPI.CallAPIPeopleCount();
+
         //while(roomsUTS.length > 0);
         //Go through and get all the rooms associated with the building number the user selected. In this fill the RoomRecord.java
         sortRoomsForSelectedBuilding();
@@ -88,9 +89,8 @@ public class MemberActivity extends Activity
     /**
      * @brief
      */
-    private UTSRooms callAsyncGetRooms() {
+    private void callAsyncGetRooms() {
         UTSRooms dbRooms = new UTSRooms(this);
         dbRooms.getSelectedRoom(getBuilding());
-        setUTSROOMS
     }
 }
