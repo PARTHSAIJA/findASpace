@@ -15,10 +15,7 @@ import android.widget.Toast;
 import com.findaspace.findaspace.app.R;
 import com.findaspace.findaspace.main.login.LoginActivity;
 import com.findaspace.findaspace.main.member.MemberActivity;
-import com.findaspace.findaspace.readDB.UTSRooms;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.LinkedList;
 
 
 public class SearchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{

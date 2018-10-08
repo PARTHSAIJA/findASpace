@@ -2,18 +2,21 @@ package com.findaspace.findaspace.main.member;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.findaspace.findaspace.app.R;
+import com.findaspace.findaspace.feitresearchapi.CallAPIPeopleCount;
+import com.findaspace.findaspace.readDB.RoomRecord;
 import com.findaspace.findaspace.readDB.UTSRooms;
+
+import java.util.LinkedList;
 
 public class MemberActivity extends Activity
 {
     // Array of strings...
     ListView simpleList;
     String countryList[] = {"2.101 - 10 SEATS LEFT","2.102 - 12 SEATS LEFT","2.103 - 18 SEATS LEFT","2.104 - 22 SEATS LEFT","2.105 - 15 SEATS LEFT"};
-    public String[] roomsUTS;
+    public LinkedList<RoomRecord> roomsUTS;
     public String building;
     public int numOfPeople;
 
@@ -33,11 +36,11 @@ public class MemberActivity extends Activity
         this.numOfPeople = numOfPeople;
     }
 
-    public String[] getRoomsUTS() {
+    public LinkedList<RoomRecord> getRoomsUTS() {
         return roomsUTS;
     }
 
-    public void setRoomsUTS(String[] roomsUTS) {
+    public void setRoomsUTS(LinkedList<RoomRecord> roomsUTS) {
         this.roomsUTS = roomsUTS;
     }
 
@@ -45,8 +48,12 @@ public class MemberActivity extends Activity
         super.onCreate(savedInstanceState);      setContentView(R.layout.student_view);
         simpleList = (ListView)findViewById(R.id.simpleListView);
 
-        //Get all the rooms
         callAsyncGetRooms();
+        //Get all the rooms
+        CallAPIPeopleCount callAPI = new CallAPIPeopleCount();
+        callAPI.CallAPIPeopleCount();
+
+        //while(roomsUTS.length > 0);
         //Go through and get all the rooms associated with the building number the user selected. In this fill the RoomRecord.java
         sortRoomsForSelectedBuilding();
         //Create API request for each room to determine how many in the room
@@ -84,10 +91,6 @@ public class MemberActivity extends Activity
      */
     private void callAsyncGetRooms() {
         UTSRooms dbRooms = new UTSRooms(this);
-        try {
-            dbRooms.getAllRooms();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        dbRooms.getSelectedRoom(getBuilding());
     }
 }
