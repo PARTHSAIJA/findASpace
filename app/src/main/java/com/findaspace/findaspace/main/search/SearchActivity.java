@@ -100,17 +100,17 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MemberActivity searchResults = new MemberActivity();
-                        //Set the setBuilding in MemberActivity
-                        searchResults.setBuilding(buildingSpr.getSelectedItem().toString());
+
+                        Intent intent = new Intent(SearchActivity.this,MemberActivity.class);
+
+                        intent.putExtra("building", buildingSpr.getSelectedItem().toString()); //Optional parameters
                         try {
-                            //Set the setNumOfPeople in MemberActivity
-                            searchResults.setNumOfPeople(Integer.parseInt(noOfPeopleTxt.getText().toString()));
+                            intent.putExtra("numOfPeople", Integer.parseInt(noOfPeopleTxt.getText().toString())); //Optional parameters
                         } catch (NumberFormatException e) {
                             //Todo: disable characters to be inputted into number of people searching for. Then no need for try/catch
                             throw e;
                         }
-                        Intent intent = new Intent(SearchActivity.this,MemberActivity.class);
+
                         startActivity(intent);
                     }
                 }

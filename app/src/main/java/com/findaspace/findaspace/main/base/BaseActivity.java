@@ -18,4 +18,5 @@ public class BaseActivity extends AppCompatActivity implements BaseView {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
+
 }

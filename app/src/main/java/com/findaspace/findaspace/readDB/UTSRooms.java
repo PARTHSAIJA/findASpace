@@ -51,9 +51,13 @@ public class UTSRooms{
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "Starting search");
+                roomRecord = new LinkedList<>();
                 if (dataSnapshot.exists()) {
+                    //Get all the rooms within the database
                     for(DataSnapshot d : dataSnapshot.getChildren()) {
-                        if(d.getKey().contains("CB" + getBuildingNumber())){
+                        System.out.println("ROOM is:" + d.getKey() + "--Should contain: " + getBuildingNumber());
+                        //Get all the rooms associated with the user's selected room
+                        if (d.getKey().contains(getBuildingNumber())) {
                             Log.d(TAG, "room:" + d.getKey());
                             String roomStr = d.getKey();
                             rooms.add(roomStr);
@@ -64,25 +68,47 @@ public class UTSRooms{
                             //Get just the room
                             String roomNo = (roomStr).substring(6);
 
-                            for(DataSnapshot childOfKey : d.getChildren()){
-                                RoomRecord roomDetails = new RoomRecord
-                                        (
-                                                roomBuilding,
-                                                roomLvl,
-                                                roomNo,
-                                                Boolean.valueOf(childOfKey.child("Blocked").getValue().toString()),
-                                                childOfKey.child("CloseTime").getValue().toString(),
-                                                Integer.valueOf(childOfKey.child("MaxCap").getValue().toString()),
-                                                childOfKey.child("OpenTime").getValue().toString(),
-                                                childOfKey.child("UnitNo").getValue().toString()
-                                        );
-                                roomRecord.add(roomDetails);
-                            }
+                            RoomRecord roomDetails = new RoomRecord
+                                    (
+                                        roomBuilding,
+                                        roomLvl,
+                                        roomNo,
+                                        Boolean.valueOf(d.child("Blocked").getValue().toString()),
+                                        d.child("CloseTime").getValue().toString(),
+                                        Integer.valueOf(d.child("MaxCap").getValue().toString()),
+                                        d.child("OpenTime").getValue().toString(),
+                                        d.child("UnitNo").getValue().toString()
+                                    );
+                            System.out.println( "TEST:UTSRooms-> " +"\n" +
+                                "CB" + roomDetails.BuildingNo + "." + roomDetails.LevelNo + "." + roomDetails.RoomNo + "\n" +
+                                roomDetails.RoomBlocked +  "\n" +
+                                roomDetails.CloseTime + "\n" +
+                                roomDetails.MaxCap + "\n" +
+                                roomDetails.OpenTime + "\n" +
+                                roomDetails.UnitNo
+                            );
+                            roomRecord.add(roomDetails);
+
+                            //roomRecord.add(roomDetails);
+
+//                            roomRecord.add(new RoomRecord(
+//                                    roomBuilding,
+//                                    roomLvl,
+//                                    roomNo,
+//                                    Boolean.valueOf(d.child("Blocked").getValue().toString()),
+//                                    d.child("CloseTime").getValue().toString(),
+//                                    Integer.valueOf(d.child("MaxCap").getValue().toString()),
+//                                    d.child("OpenTime").getValue().toString(),
+//                                    d.child("UnitNo").getValue().toString()
+//                            ));
+
                         }
                     }
                 }
                 //String[] formattedRooms = FormatRooms(rooms);
+                System.out.println("SIZE:" + roomRecord.size());
                 activity.setRoomsUTS(roomRecord);
+                activity.callAsyncGetPeopleCount();
             }
             @Override
             public void onStart() {
