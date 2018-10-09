@@ -37,7 +37,7 @@ public class CallAPIPeopleCount implements AsyncCallTaskResponse{
     }
 
     @Override
-    public LinkedList<RoomRecord> getPeopleCount() {
+    public LinkedList<RoomRecord> getRoomsUTS() {
         return roomsUTS;
     }
 }

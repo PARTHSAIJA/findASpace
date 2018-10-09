@@ -52,8 +52,8 @@ public class AsyncCallTask extends AsyncTask<Void, Void, LinkedList<PeopleCountR
     @Override
     protected LinkedList<PeopleCountRecord> doInBackground(Void... voids) {
         try{
-            //LinkedList<RoomRecord> utsRooms =;
-            for (RoomRecord room:  delegate.getPeopleCount()) {
+            peopleCountRecord = new LinkedList<>();
+            for (RoomRecord room:  delegate.getRoomsUTS()) {
                 System.out.println("UNITNO:" + room.UnitNo);
 
 

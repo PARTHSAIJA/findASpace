@@ -6,5 +6,5 @@ import java.util.LinkedList;
 
 public interface AsyncCallTaskResponse {
     void processFinish(LinkedList<PeopleCountRecord> peopleCountRecord);
-    LinkedList<RoomRecord> getPeopleCount();
+    LinkedList<RoomRecord> getRoomsUTS();
 }

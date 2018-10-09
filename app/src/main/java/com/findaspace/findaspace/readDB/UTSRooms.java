@@ -77,7 +77,7 @@ public class UTSRooms{
                                         d.child("closeTime").getValue().toString(),
                                         Integer.valueOf(d.child("maxCap").getValue().toString()),
                                         d.child("openTime").getValue().toString(),
-                                        d.child("uitNo").getValue().toString()
+                                        d.child("unitNo").getValue().toString()
                                     );
                             System.out.println( "TEST:UTSRooms-> " +"\n" +
                                 "CB" + roomDetails.BuildingNo + "." + roomDetails.LevelNo + "." + roomDetails.RoomNo + "\n" +
