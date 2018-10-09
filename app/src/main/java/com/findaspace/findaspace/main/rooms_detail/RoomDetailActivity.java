@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -14,6 +13,7 @@ import android.widget.TimePicker;
 
 import com.findaspace.findaspace.app.R;
 import com.findaspace.findaspace.base.BaseActivity;
+import com.findaspace.findaspace.base.FindASpaceApplication;
 import com.findaspace.findaspace.entity.RoomBean;
 import com.findaspace.findaspace.main.room.RoomActivity;
 
@@ -24,7 +24,7 @@ import butterknife.OnClick;
 
 /**
  * Room Detail
- * display the data of available room
+ * 显示可用房间数据
  */
 public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetailPresenter> implements IRoomDetailView {
 
@@ -40,6 +40,8 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
     TextView mRoomCloseTimeTv;
     @BindView(R.id.room_block_tv)
     TextView mRoomBlockTv;
+    @BindView(R.id.room_person_number_tv)
+    TextView mRoomPersonNumberTv;
     @BindView(R.id.room_block_switch)
     Switch mRoomBlockSwitch;
     @BindView(R.id.room_confirm_btn)
@@ -49,13 +51,15 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
     private Calendar mCalendar;
     private TimePickerDialog mOpenTimePickerDialog;
     private TimePickerDialog mCloseTimePickerDialog;
+    private boolean mShowModifyView;
 
     @Override
     protected void initEvent() {
         mRoomBlockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                buttonView.setText(isChecked ? "unAvailable" : "available");
+                // Switch
+                mRoomBlockTv.setText(isChecked ? "Status: unAvailable" : "Status: available");
             }
         });
     }
@@ -69,14 +73,15 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
             return;
         }
         Parcelable parcelableExtra = intent.getParcelableExtra(RoomActivity.ROOM_DETAIL);
-        boolean showModifyView = intent.getBooleanExtra(RoomActivity.ROOM_MODIFY, false);
-        if (showModifyView) {
-            // setVisibility visible
+        mShowModifyView = intent.getBooleanExtra(RoomActivity.ROOM_MODIFY, false);
+        if (mShowModifyView) {
+            //
             mRoomBlockSwitch.setVisibility(View.VISIBLE);
             mRoomConfirmBtn.setVisibility(View.VISIBLE);
         }
-        // get Instance of Calendar
+        //
         mCalendar = Calendar.getInstance();
+        // set room data
         if (parcelableExtra instanceof RoomBean) {
             mRoom = (RoomBean) parcelableExtra;
             mRoomDetailNameTv.setText("RoomName: " + mRoom.getRoomName());
@@ -93,6 +98,11 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
             boolean blocked = mRoom.isBlocked();
             mRoomBlockSwitch.setChecked(blocked);
             mRoomBlockTv.setText(blocked ? "Status: unAvailable" : "Status: available");
+            if (FindASpaceApplication.getInstance().mUserFlag != FindASpaceApplication.UserFlag.USER) {
+                mRoomPersonNumberTv.setText(String.format("personNumber: %d", mRoom.getPersonNumber()));
+            }
+            //
+//            mPresenter.getCurRoomPersonNum(mRoom.getUnitNo());
         }
     }
 
@@ -110,11 +120,15 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.room_confirm_btn:
-                // modify Room data
+                //
                 mPresenter.modifyRoomData(mRoom, mRoomBlockSwitch.isChecked());
                 break;
             case R.id.room_open_time_tv:
-                // modify open time Dialog
+                if (!mShowModifyView) {
+                    //
+                    break;
+                }
+                //
                 if (mOpenTimePickerDialog == null) {
                     mOpenTimePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
                         @Override
@@ -129,7 +143,11 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
                 mOpenTimePickerDialog.show();
                 break;
             case R.id.room_close_time_tv:
-                // Modify close time Dialog
+                if (!mShowModifyView) {
+                    //
+                    break;
+                }
+                //
                 if (mCloseTimePickerDialog == null) {
                     mCloseTimePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
                         @Override
@@ -150,7 +168,17 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
 
     @Override
     public void modifyComplete() {
-        // finished modify
+
         finish();
+    }
+
+    /**
+     *
+     *
+     * @param personNumber
+     */
+    @Override
+    public void showCurRoomPersonNumber(int personNumber) {
+        mRoomPersonNumberTv.setText(String.format("personNumber: %d", personNumber));
     }
 }

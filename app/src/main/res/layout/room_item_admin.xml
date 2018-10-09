@@ -9,6 +9,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textColor="@color/colorBlue" />
 
     <Button
@@ -16,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="modify"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlue" />
 
 </LinearLayout>

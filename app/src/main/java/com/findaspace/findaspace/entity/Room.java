@@ -1,81 +1,81 @@
 package com.findaspace.findaspace.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * get room detail from firebase
+ */
 public class Room {
     /**
-     * Blocked : false
-     * CloseTime : 2300
-     * MaxCap : 50
-     * OpenTime : 0500
-     * UnitNo : PCB1.04
+     * blocked : false
+     * closeTime : 2300
+     * maxCap : 50
+     * openTime : 0500
+     * unitNo : PCB1.04
      */
-
-    private boolean Blocked;
-    private String CloseTime;
-    private int MaxCap;
-    private String OpenTime;
-    private String UnitNo;
+    private boolean blocked;
+    private String closeTime;
+    private int maxCap;
+    private String openTime;
+    private String unitNo;
 
     public Room() {
     }
 
     public Room(boolean blocked, String closeTime, int maxCap, String openTime, String unitNo) {
-        Blocked = blocked;
-        CloseTime = closeTime;
-        MaxCap = maxCap;
-        OpenTime = openTime;
-        UnitNo = unitNo;
+        this.blocked = blocked;
+        this.closeTime = closeTime;
+        this.maxCap = maxCap;
+        this.openTime = openTime;
+        this.unitNo = unitNo;
     }
 
     public boolean isBlocked() {
-        return Blocked;
+        return blocked;
     }
 
     public void setBlocked(boolean Blocked) {
-        this.Blocked = Blocked;
+        this.blocked = Blocked;
     }
 
     public String getCloseTime() {
-        return CloseTime;
+        return closeTime;
     }
 
     public void setCloseTime(String CloseTime) {
-        this.CloseTime = CloseTime;
+        this.closeTime = CloseTime;
     }
 
     public int getMaxCap() {
-        return MaxCap;
+        return maxCap;
     }
 
     public void setMaxCap(int MaxCap) {
-        this.MaxCap = MaxCap;
+        this.maxCap = MaxCap;
     }
 
     public String getOpenTime() {
-        return OpenTime;
+        return openTime;
     }
 
     public void setOpenTime(String OpenTime) {
-        this.OpenTime = OpenTime;
+        this.openTime = OpenTime;
     }
 
     public String getUnitNo() {
-        return UnitNo;
+        return unitNo;
     }
 
     public void setUnitNo(String UnitNo) {
-        this.UnitNo = UnitNo;
+        this.unitNo = UnitNo;
     }
 
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("Blocked", Blocked);
-        result.put("CloseTime", CloseTime);
-        result.put("MaxCap", MaxCap);
-        result.put("OpenTime", OpenTime);
-        result.put("UnitNo", UnitNo);
-        return result;
+    @Override
+    public String toString() {
+        return "Room{" +
+                "blocked=" + blocked +
+                ", closeTime='" + closeTime + '\'' +
+                ", maxCap=" + maxCap +
+                ", openTime='" + openTime + '\'' +
+                ", unitNo='" + unitNo + '\'' +
+                '}';
     }
 }

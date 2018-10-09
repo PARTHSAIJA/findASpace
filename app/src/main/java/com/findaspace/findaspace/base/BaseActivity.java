@@ -11,8 +11,7 @@ import com.findaspace.findaspace.app.R;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-/**
- * Created by Administrator on 2018/10/5.
+/*
  */
 
 public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> extends AppCompatActivity implements BaseView {
@@ -24,10 +23,13 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showActionBarBackButton();
+        // set XML layout
         BaseActivity.this.setContentView(getLayoutId());
+        // use ButterKnife
         mBind = ButterKnife.bind(this);
         mPresenter = setPresenter();
         if (mPresenter != null) {
+            //
             mPresenter.attachView(this);
         }
         initView();
@@ -35,17 +37,17 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     }
 
     /**
-     * initiate event
+     * initiate Event
      */
     protected abstract void initEvent();
 
     /**
-     * initiate View
+     * initiate  View
      */
     protected abstract void initView();
 
     /**
-     * setPresenter
+     * set Presenter
      */
     protected abstract P setPresenter();
 
@@ -54,12 +56,12 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     }
 
     /**
-     * getLayoutId
+     * get layout Id
      */
     protected abstract int getLayoutId();
 
     /**
-     * Display ActionBar BackButton
+     * show ActionBar backButton
      */
     private void showActionBarBackButton() {
         ActionBar actionBar = getSupportActionBar();
@@ -73,6 +75,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                // click ActionBarbutton，finish this page
                 finish();
                 return true;
         }
@@ -80,7 +83,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     }
 
     /**
-     * SetActionBarTitle
+     * set action title
      */
     protected void setActionBarTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
@@ -92,10 +95,12 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     @Override
     protected void onDestroy() {
         if (mPresenter != null) {
+
             mPresenter.detachView();
         }
         super.onDestroy();
         if (mBind != null) {
+
             mBind.unbind();
         }
     }

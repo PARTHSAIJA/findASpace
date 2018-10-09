@@ -10,16 +10,22 @@ import com.findaspace.findaspace.entity.RoomBean;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/10/2.
+ *
  */
+public class RoomUserAdapter extends BaseQuickAdapter<RoomBean, BaseViewHolder> {
 
-public class RoomUserAdapter extends BaseQuickAdapter<RoomBean,BaseViewHolder> {
-    public RoomUserAdapter(@Nullable List<RoomBean> data) {
+    /**
+     *
+     */
+    private int mNoSeat;
+
+    public RoomUserAdapter(@Nullable List<RoomBean> data, int noSeat) {
         super(R.layout.room_item_user, data);
+        mNoSeat = noSeat;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, RoomBean item) {
-        helper.setText(R.id.available_room_tv,item.getRoomName());
+        helper.setText(R.id.available_room_tv, item.getRoomName());
     }
 }

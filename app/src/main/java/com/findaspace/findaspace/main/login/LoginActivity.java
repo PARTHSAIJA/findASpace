@@ -11,20 +11,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.findaspace.findaspace.base.FindASpaceApplication;
+import com.findaspace.findaspace.dialog.LoadingDialog;
 import com.findaspace.findaspace.main.room.RoomActivity;
-import com.findaspace.findaspace.main.search.SearchActivity;
 import com.findaspace.findaspace.app.R;
-import com.findaspace.findaspace.readDB.OnGetDataListener;
+import com.findaspace.findaspace.main.search.SearchActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -36,7 +31,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    /**
+     *
+     */
+    private LoadingDialog mLoginDialog;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
@@ -102,12 +102,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 if (email.contains(getString(R.string.login_admin))) {
+                                    //
                                     FindASpaceApplication.getInstance().mUserFlag = FindASpaceApplication.UserFlag.ADMIN;
                                     intent = new Intent(LoginActivity.this, RoomActivity.class);
                                 } else if (email.contains("@security")) {
-                                    intent = new Intent(LoginActivity.this, SearchActivity.class);
+                                    //
+                                    intent = new Intent(LoginActivity.this, RoomActivity.class);
                                     FindASpaceApplication.getInstance().mUserFlag = FindASpaceApplication.UserFlag.SECURITY;
                                 } else {
+                                    //
                                     intent = new Intent(LoginActivity.this, SearchActivity.class);
                                     FindASpaceApplication.getInstance().mUserFlag = FindASpaceApplication.UserFlag.USER;
                                 }
@@ -115,9 +118,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 startActivity(intent);
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Exception exception = task.getException();
+                                Log.w(TAG, "signInWithEmail:failure", exception);
+                                if (exception != null) {
+                                    Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
                             updateStatus();
+                            if (mLoginDialog != null) {
+                                mLoginDialog.dismiss();
+                            }
                         }
                     });
         }
@@ -156,8 +166,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.btnLogin:
                 signUserInWithEmail();
+                showLoginDialog();
                 break;
         }
+    }
+
+    /**
+     *
+     */
+    private void showLoginDialog() {
+        if (mLoginDialog == null) {
+            mLoginDialog = new LoadingDialog(this);
+            //
+            mLoginDialog.setText(getString(R.string.logging));
+        }
+        mLoginDialog.show();
     }
 
     //WRITE TO DB

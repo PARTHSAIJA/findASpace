@@ -9,6 +9,9 @@ import com.findaspace.findaspace.entity.RoomBean;
 
 import java.util.List;
 
+/**
+ *
+ */
 public class RoomSecurityAdapter extends BaseQuickAdapter<RoomBean, BaseViewHolder> {
     public RoomSecurityAdapter(@Nullable List<RoomBean> data) {
         super(R.layout.room_item_user, data);

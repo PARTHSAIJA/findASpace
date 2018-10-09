@@ -8,32 +8,38 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.findaspace.findaspace.app.R;
+import com.findaspace.findaspace.main.emptyRoom.EmptyRoomActivity;
 import com.findaspace.findaspace.main.login.LoginActivity;
 import com.findaspace.findaspace.main.member.MemberActivity;
+import com.findaspace.findaspace.main.room.RoomActivity;
 import com.findaspace.findaspace.readDB.UTSRooms;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.LinkedList;
 
 
-public class SearchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class SearchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "SearchActivity";
     private static Button submit_button;
 
     private LinkedList<String> list = new LinkedList<>();
 
-    String[] buildingNo={"CB1","CB2","CB3","CB4","CB5","CB6","CB7","CB8","CB9","CB10","CB11"};
+    String[] buildingNo = {"CB1", "CB2", "CB3", "CB4", "CB5", "CB6", "CB7", "CB8", "CB9", "CB10", "CB11"};
+    private int mPosition;
+    private EditText mNoSeatEt;
+    public static final String NO_SEAT = "noSeat";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);//Getting the instance of Spinner and applying OnItemSelectedListener on it
-
+        mNoSeatEt = (EditText) findViewById(R.id.txtNoOfSeats);
         UTSRooms dbRooms = new UTSRooms(this);
         try {
             dbRooms.getAllRooms();
@@ -44,11 +50,11 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         submitButton();
     }
 
-    public void setBuilding(String[] roomsUTS ){
+    public void setBuilding(String[] roomsUTS) {
         Spinner spin = (Spinner) findViewById(R.id.spinnerBuilding);
         spin.setOnItemSelectedListener(this);
         //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,roomsUTS);
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, roomsUTS);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
@@ -60,7 +66,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
             //preventing default implementation previous to android.os.Build.VERSION_CODES.ECLAIR
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(SearchActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(SearchActivity.this,LoginActivity.class);
+            Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
             startActivity(intent);
         }
         return super.onKeyDown(keyCode, event);
@@ -69,30 +75,37 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
 
     //Performing action onItemSelected and onNothing selected
     @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+        mPosition = position;
         //Toast.makeText(getApplicationContext(), buildingNo[position], Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
-     // TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 
-    public void submitButton(){
-        submit_button = (Button)findViewById(R.id.button);
-
-
+    public void submitButton() {
+        submit_button = (Button) findViewById(R.id.button);
         submit_button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(SearchActivity.this,MemberActivity.class);
+                        Intent intent = null;
+                       if (buildingNo[mPosition].equalsIgnoreCase("CB11")) {
+                        intent = new Intent(SearchActivity.this, RoomActivity.class);
+                      } else {
+                           intent = new Intent(SearchActivity.this, EmptyRoomActivity.class);
+                       }
+                        String noSeat = mNoSeatEt.getText().toString();
+                        int i = Integer.parseInt(noSeat);
+                        intent.putExtra(NO_SEAT, i);
                         startActivity(intent);
                     }
                 }
         );
     }
 
-    }
+}
 
