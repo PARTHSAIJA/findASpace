@@ -69,7 +69,7 @@ public class MemberActivity extends Activity
         simpleList = (ListView)findViewById(R.id.simpleListView);
 
         callAsyncGetRooms();
-        callAsyncGetPeopleCount();
+        //callAsyncGetPeopleCount();
 
         //while(roomsUTS.length > 0);
         //Filter out the rooms where there is not enough space, blocked or closed

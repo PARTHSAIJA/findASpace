@@ -59,8 +59,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         };
 
-        new CallAPIPeopleCount().CallAPIPeopleCount();
-
         updateStatus();
     }
 

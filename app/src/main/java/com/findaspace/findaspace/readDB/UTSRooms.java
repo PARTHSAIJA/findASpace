@@ -73,11 +73,11 @@ public class UTSRooms{
                                         roomBuilding,
                                         roomLvl,
                                         roomNo,
-                                        Boolean.valueOf(d.child("Blocked").getValue().toString()),
-                                        d.child("CloseTime").getValue().toString(),
-                                        Integer.valueOf(d.child("MaxCap").getValue().toString()),
-                                        d.child("OpenTime").getValue().toString(),
-                                        d.child("UnitNo").getValue().toString()
+                                        Boolean.valueOf(d.child("blocked").getValue().toString()),
+                                        d.child("closeTime").getValue().toString(),
+                                        Integer.valueOf(d.child("maxCap").getValue().toString()),
+                                        d.child("openTime").getValue().toString(),
+                                        d.child("uitNo").getValue().toString()
                                     );
                             System.out.println( "TEST:UTSRooms-> " +"\n" +
                                 "CB" + roomDetails.BuildingNo + "." + roomDetails.LevelNo + "." + roomDetails.RoomNo + "\n" +
