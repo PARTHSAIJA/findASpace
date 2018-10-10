@@ -3,6 +3,7 @@ package com.findaspace.findaspace.main.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,12 +41,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);//Getting the instance of Spinner and applying OnItemSelectedListener on it
         mNoSeatEt = (EditText) findViewById(R.id.txtNoOfSeats);
-        UTSRooms dbRooms = new UTSRooms(this);
-        try {
-            dbRooms.getAllRooms();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        setBuilding(buildingNo);
 
         submitButton();
     }
@@ -99,7 +95,10 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
                            intent = new Intent(SearchActivity.this, EmptyRoomActivity.class);
                        }
                         String noSeat = mNoSeatEt.getText().toString();
-                        int i = Integer.parseInt(noSeat);
+                        int i = 0;
+                        if(!TextUtils.isEmpty(noSeat)) {
+                            i = Integer.parseInt(noSeat);
+                        }
                         intent.putExtra(NO_SEAT, i);
                         startActivity(intent);
                     }

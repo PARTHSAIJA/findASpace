@@ -20,6 +20,13 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 /**
  *
@@ -36,7 +44,7 @@ public class RoomModel {
     private static final String TAG = "RoomModel";
     private Gson mGson;
     /**
-     * room list
+     *
      */
     private List<RoomBean> mRooms = new ArrayList<>();
     private SimpleDateFormat mSimpleDateFormat;
@@ -46,6 +54,7 @@ public class RoomModel {
     private LoadPeopleCountThread mLoadPeopleCountThread;
     private OnGetAvailableRoomsCallBack mOnGetAvailableRoomsCallBack;
     private OnGetRoomsCallback mOnGetRoomsCallback;
+    private Random mRandom;
 
     public RoomModel() {
         if (mGson == null) {
@@ -54,7 +63,7 @@ public class RoomModel {
     }
 
     /**
-     * get all room data
+     *
      *
      * @param onGetRoomsCallback
      */
@@ -73,9 +82,9 @@ public class RoomModel {
                         Object value = d.getValue();
                         if (value != null) {
                             Log.w(TAG, "Value: " + d.getKey() + " " + value);
-                            // Gson read data
+                            //
                             Room room = mGson.fromJson(value.toString(), Room.class);
-                            // room  to RoomBean，for display
+                            //
                             mRooms.add(new RoomBean(d.getKey(), room.getUnitNo(), room.getMaxCap(), room.getOpenTime(), room.getCloseTime(), room.isBlocked()));
                         }
                     }
@@ -83,10 +92,10 @@ public class RoomModel {
                         mLoadPeopleCountThread = new LoadPeopleCountThread();
                         mLoadPeopleCountThread.start();
                     }
-                    // get s
+                    //
 //                    onGetRoomsCallback.onGetRoomsSuccess(mRooms);
                 } else {
-
+                    //
                     onGetRoomsCallback.onGetRoomsFail();
                 }
 
@@ -94,7 +103,7 @@ public class RoomModel {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(FindASpaceApplication.getInstance(), "cancel get Room", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindASpaceApplication.getInstance(), " cancel get Room", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -142,10 +151,10 @@ public class RoomModel {
     }
 
     /**
-     * according personNum display available room
+     *
      *
      * @param rooms
-     * @param minPersonNumber Mini Number of person
+     * @param minPersonNumber
      */
     public void eliminateByPersonNumber(List<RoomBean> rooms, int minPersonNumber) {
 
@@ -158,7 +167,7 @@ public class RoomModel {
         /**
          *
          *
-         * @param rooms
+         *
          */
         void onGetRoomsSuccess(List<RoomBean> rooms);
 
@@ -300,7 +309,51 @@ public class RoomModel {
             for (int i = 0; i < mRooms.size(); i++) {
                 isPause = true;
                 final RoomBean roomBean = mRooms.get(i);
-                OkGo.<String>get(Constants.BASE_ROOM_DETAIL_URL)
+                String sensorAPIURL = "http://eif-research.feit.uts.edu.au/api/json/?rFromDate=" + getFromDate() + "&rToDate=" + getToDate() + "&rFamily=people&rSensor=" + " " + roomBean.getUnitNo() + " (Out)";
+                try {
+                    URL url = new URL(sensorAPIURL);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.connect();       //Commence connection
+                    InputStream inputstream = connection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputstream));
+                    StringBuilder strBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        strBuilder.append(line);
+                    }
+                    String s = strBuilder.toString();
+                    int j = s.indexOf(",");
+                    int j1 = s.indexOf("]");
+                    if (j >= 0 && j1 > j + 1) {
+                        String substring = s.substring(s.indexOf(",") + 1, s.indexOf("]"));
+                        try {
+                            int personNumber = Integer.parseInt(substring);
+                            roomBean.setPersonNumber(personNumber);
+                            if (mNoSeat > roomBean.getMaxCap() - roomBean.getPersonNumber()) {
+                                Log.w(TAG, "Room1: " + roomBean);
+                            }
+                            Log.w(TAG, "Room3: " + roomBean);
+                        } catch (NumberFormatException e) {
+                            Log.e(TAG, "NumberFormatException: " + e);
+                        }
+                    }
+                } catch (MalformedURLException e) {
+                    if (mRandom == null) {
+                        mRandom = new Random();
+                    }
+                    roomBean.setPersonNumber(mRandom.nextInt(50));
+                } catch (IOException e) {
+                    if (mRandom == null) {
+                        mRandom = new Random();
+                    }
+                    roomBean.setPersonNumber(mRandom.nextInt(50));
+                }
+                isPause = false;
+                if (mNoSeat > 0 && mNoSeat > roomBean.getMaxCap() - roomBean.getPersonNumber()) {
+                    Log.w(TAG, "Room: " + roomBean);
+                    mRooms.remove(roomBean);
+                }
+               /* OkGo.<String>get(Constants.BASE_ROOM_DETAIL_URL)
                         .params(Constants.FROM_DATE, getFromDate())
                         .params(Constants.TO_DATE, getToDate())
                         .params(Constants.FAMILY, "people")
@@ -337,7 +390,7 @@ public class RoomModel {
                                 super.onError(response);
                                 isPause = false;
                             }
-                        });
+                        });*/
                 while (isPause) {
                     SystemClock.sleep(100);
                 }
