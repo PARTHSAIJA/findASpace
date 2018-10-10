@@ -42,7 +42,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_main);//Getting the instance of Spinner and applying OnItemSelectedListener on it
         mNoSeatEt = (EditText) findViewById(R.id.txtNoOfSeats);
         setBuilding(buildingNo);
-
         submitButton();
     }
 
@@ -89,14 +88,14 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
                     @Override
                     public void onClick(View v) {
                         Intent intent = null;
-                       if (buildingNo[mPosition].equalsIgnoreCase("CB11")) {
-                        intent = new Intent(SearchActivity.this, RoomActivity.class);
-                      } else {
-                           intent = new Intent(SearchActivity.this, EmptyRoomActivity.class);
-                       }
+                        if (mPosition == 10) {
+                            intent = new Intent(SearchActivity.this, RoomActivity.class);
+                        } else {
+                            intent = new Intent(SearchActivity.this, EmptyRoomActivity.class);
+                        }
                         String noSeat = mNoSeatEt.getText().toString();
                         int i = 0;
-                        if(!TextUtils.isEmpty(noSeat)) {
+                        if (!TextUtils.isEmpty(noSeat)) {
                             i = Integer.parseInt(noSeat);
                         }
                         intent.putExtra(NO_SEAT, i);
