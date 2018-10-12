@@ -1,7 +1,9 @@
 package com.findaspace.findaspace.main.room;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -37,14 +39,14 @@ import java.util.Locale;
 import java.util.Random;
 
 /**
- *
+ * get room data
  */
 public class RoomModel {
 
     private static final String TAG = "RoomModel";
     private Gson mGson;
     /**
-     *
+     * room list
      */
     private List<RoomBean> mRooms = new ArrayList<>();
     private SimpleDateFormat mSimpleDateFormat;
@@ -55,6 +57,7 @@ public class RoomModel {
     private OnGetAvailableRoomsCallBack mOnGetAvailableRoomsCallBack;
     private OnGetRoomsCallback mOnGetRoomsCallback;
     private Random mRandom;
+    private static final String AVAILABLE_ROOMS = "availableRooms";
 
     public RoomModel() {
         if (mGson == null) {
@@ -63,9 +66,9 @@ public class RoomModel {
     }
 
     /**
+     * get all room data
      *
-     *
-     * @param onGetRoomsCallback
+     * @param onGetRoomsCallback  after get all room data call back， return， get successfully or failed get data
      */
     public void getRooms(final OnGetRoomsCallback onGetRoomsCallback) {
         mOnGetRoomsCallback = onGetRoomsCallback;
@@ -82,9 +85,9 @@ public class RoomModel {
                         Object value = d.getValue();
                         if (value != null) {
                             Log.w(TAG, "Value: " + d.getKey() + " " + value);
-                            //
+                            // Gson read data
                             Room room = mGson.fromJson(value.toString(), Room.class);
-                            //
+                            // room to RoomBean，for displaying
                             mRooms.add(new RoomBean(d.getKey(), room.getUnitNo(), room.getMaxCap(), room.getOpenTime(), room.getCloseTime(), room.isBlocked()));
                         }
                     }
@@ -92,10 +95,10 @@ public class RoomModel {
                         mLoadPeopleCountThread = new LoadPeopleCountThread();
                         mLoadPeopleCountThread.start();
                     }
-                    //
+                    // get roomSucess
 //                    onGetRoomsCallback.onGetRoomsSuccess(mRooms);
                 } else {
-                    //
+                    // get room fail
                     onGetRoomsCallback.onGetRoomsFail();
                 }
 
@@ -103,15 +106,16 @@ public class RoomModel {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(FindASpaceApplication.getInstance(), " cancel get Room", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindASpaceApplication.getInstance(), "Cancel getRoom", Toast.LENGTH_LONG).show();
             }
         });
     }
 
     /**
-     *
+     *getAvailableRooms
      */
     public void getAvailableRooms(final int noSeat, final OnGetAvailableRoomsCallBack onGetAvailableRoomsCallBack) {
+        Log.w(TAG, "noSeat: " + noSeat);
         mOnGetAvailableRoomsCallBack = onGetAvailableRoomsCallBack;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference reference = firebaseDatabase.getReference("Room");
@@ -123,7 +127,7 @@ public class RoomModel {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                         Object value = d.getValue();
                         if (value != null) {
-                            //
+                            // Gson read the data
                             Room room = mGson.fromJson(value.toString(), Room.class);
                             if (!room.isBlocked() && compareDate(room.getCloseTime()) && compareFromDate(room.getOpenTime())) {
                                 // only add AvailableRoom
@@ -138,64 +142,66 @@ public class RoomModel {
                     mLoadPeopleCountThread.start();
 //                    onGetAvailableRoomsCallBack.onGetAvailableRoomsSuccess(mRooms);
                 } else {
-                    //
+                    // getAvailable rooms Fail
                     onGetAvailableRoomsCallBack.onGetAvailableRoomsFail();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(FindASpaceApplication.getInstance(), "cancel get Room", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindASpaceApplication.getInstance(), "cancel getRoom", Toast.LENGTH_LONG).show();
             }
         });
     }
 
     /**
-     *
+     * according person Num get room
      *
      * @param rooms
-     * @param minPersonNumber
+     * @param minPersonNumber minimal Person Number
      */
     public void eliminateByPersonNumber(List<RoomBean> rooms, int minPersonNumber) {
 
     }
 
     /**
-     *
+     * get all rooms call back
      */
     public interface OnGetRoomsCallback {
         /**
+         * get rooms success
          *
-         *
-         *
+         * @param rooms room data
          */
         void onGetRoomsSuccess(List<RoomBean> rooms);
 
         /**
-         *
+         * Get Rooms Fail
          */
         void onGetRoomsFail();
     }
 
     /**
-     *
+     * get available room data
      */
     public interface OnGetAvailableRoomsCallBack {
         /**
+         * get available rooms success
          *
-         *
-         * @param availableRooms
+         * @param availableRooms available Rooms data
          */
         void onGetAvailableRoomsSuccess(List<RoomBean> availableRooms);
 
         /**
-         *
+         * get available rooms fail
          */
         void onGetAvailableRoomsFail();
     }
 
     /**
-     *
+     * true: open time  >= current time
+     * false:close time 《  current time
+     *  only display the rooms before close time
      */
     private boolean compareDate(String closeTime) {
         try {
@@ -226,7 +232,9 @@ public class RoomModel {
     }
 
     /**
-     *
+     * true: open time  >= current time
+     *      * false:close time 《  current time
+     *      *  only display the rooms before close time
      */
     private boolean compareFromDate(String fromTime) {
         try {
@@ -258,7 +266,7 @@ public class RoomModel {
 
 
     /**
-     *
+     * get from data
      */
     private String getFromDate() {
         if (mDateFormat == null) {
@@ -273,7 +281,7 @@ public class RoomModel {
     }
 
     /**
-     *
+     * getToDate
      */
     private String getToDate() {
         if (mDateFormat == null) {
@@ -291,7 +299,6 @@ public class RoomModel {
     public class LoadPeopleCountThread extends Thread {
 
         private final NotifyHandler mNotifyHandler;
-        boolean isPause;
         private int mNoSeat = -1;
 
         LoadPeopleCountThread() {
@@ -307,7 +314,6 @@ public class RoomModel {
             super.setName(LoadPeopleCountThread.class.getSimpleName());
             super.run();
             for (int i = 0; i < mRooms.size(); i++) {
-                isPause = true;
                 final RoomBean roomBean = mRooms.get(i);
                 String sensorAPIURL = "http://eif-research.feit.uts.edu.au/api/json/?rFromDate=" + getFromDate() + "&rToDate=" + getToDate() + "&rFamily=people&rSensor=" + " " + roomBean.getUnitNo() + " (Out)";
                 try {
@@ -348,54 +354,21 @@ public class RoomModel {
                     }
                     roomBean.setPersonNumber(mRandom.nextInt(50));
                 }
-                isPause = false;
-                if (mNoSeat > 0 && mNoSeat > roomBean.getMaxCap() - roomBean.getPersonNumber()) {
-                    Log.w(TAG, "Room: " + roomBean);
-                    mRooms.remove(roomBean);
-                }
-               /* OkGo.<String>get(Constants.BASE_ROOM_DETAIL_URL)
-                        .params(Constants.FROM_DATE, getFromDate())
-                        .params(Constants.TO_DATE, getToDate())
-                        .params(Constants.FAMILY, "people")
-                        .params(Constants.SENSOR, " " + roomBean.getUnitNo() + " (Out)")
-                        .retryCount(3)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(com.lzy.okgo.model.Response<String> response) {
-                                String value = response.body();
-                                int j = value.indexOf(",");
-                                int j1 = value.indexOf("]");
-                                if (j >= 0 && j1 > j + 1) {
-                                    String substring = value.substring(value.indexOf(",") + 1, value.indexOf("]"));
-                                    try {
-                                        int personNumber = Integer.parseInt(substring);
-                                        roomBean.setPersonNumber(personNumber);
-                                        if (mNoSeat > roomBean.getMaxCap() - roomBean.getPersonNumber()) {
-                                            Log.w(TAG, "Room1: " + roomBean);
-                                        }
-                                        Log.w(TAG, "Room3: " + roomBean);
-                                    } catch (NumberFormatException e) {
-                                        Log.e(TAG, "NumberFormatException: " + e);
-                                    }
-                                }
-                                isPause = false;
-                                if (mNoSeat > 0 && mNoSeat > roomBean.getMaxCap() - roomBean.getPersonNumber()) {
-                                    Log.w(TAG, "Room: " + roomBean);
-                                    mRooms.remove(roomBean);
-                                }
-                            }
-
-                            @Override
-                            public void onError(com.lzy.okgo.model.Response<String> response) {
-                                super.onError(response);
-                                isPause = false;
-                            }
-                        });*/
-                while (isPause) {
-                    SystemClock.sleep(100);
+            }
+            ArrayList<RoomBean> rooms = new ArrayList<>();
+            for (int i = 0; i < mRooms.size(); i++) {
+                RoomBean roomBean = mRooms.get(i);
+                if (mNoSeat <= 0 || mNoSeat <= roomBean.getMaxCap() - roomBean.getPersonNumber()) {
+                    Log.w(TAG,mNoSeat +" <= " +  (roomBean.getMaxCap() - roomBean.getPersonNumber()));
+                    rooms.add(roomBean);
                 }
             }
-            mNotifyHandler.sendEmptyMessage(NotifyHandler.LOAD_SUCCESS);
+            Message message = mNotifyHandler.obtainMessage();
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(AVAILABLE_ROOMS, rooms);
+            message.setData(bundle);
+            message.what = NotifyHandler.LOAD_SUCCESS;
+            mNotifyHandler.sendMessage(message);
         }
     }
 
@@ -408,7 +381,9 @@ public class RoomModel {
             switch (msg.what) {
                 case LOAD_SUCCESS:
                     if (mOnGetAvailableRoomsCallBack != null) {
-                        mOnGetAvailableRoomsCallBack.onGetAvailableRoomsSuccess(mRooms);
+                        Bundle bundle = msg.getData();
+                        ArrayList<RoomBean> availRooms = bundle.getParcelableArrayList(AVAILABLE_ROOMS);
+                        mOnGetAvailableRoomsCallBack.onGetAvailableRoomsSuccess(availRooms);
                     }
                     if (mOnGetRoomsCallback != null) {
                         mOnGetRoomsCallback.onGetRoomsSuccess(mRooms);
