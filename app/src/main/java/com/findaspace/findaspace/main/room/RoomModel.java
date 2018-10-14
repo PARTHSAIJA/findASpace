@@ -8,6 +8,8 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
+import com.findaspace.findaspace.entity.RoomBean;
+
 
 import com.findaspace.findaspace.Constants;
 import com.findaspace.findaspace.base.FindASpaceApplication;
@@ -264,6 +266,10 @@ public class RoomModel {
         return false;
     }
 
+    public boolean callCompareDate(String dateTest){
+        return compareDate(dateTest);
+    }
+
 
     /**
      * get from data
@@ -393,6 +399,14 @@ public class RoomModel {
                     break;
             }
         }
+    }
+
+    public void setCurDate(){
+            this.mCurDate = new Date();
+    }
+
+    public OnGetAvailableRoomsCallBack getOnGetAvailableRoomsCallBack(){
+        return this.mOnGetAvailableRoomsCallBack;
     }
 
 }
