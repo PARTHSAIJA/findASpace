@@ -150,6 +150,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    // Displays Message Status once loged in
     private void updateStatus() {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -170,6 +171,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+//    public static int addition(int x, int y){
+//
+//        return x+y;
+//
+//    }
 
     /**
      *

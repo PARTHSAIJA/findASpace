@@ -71,6 +71,7 @@ public class RoomDetailModel {
                     @Override
                     public void onSuccess(Response<String> response) {
                         String value = response.body();
+                        System.out.println("VALUE:" + value);
                         int i = value.indexOf(",");
                         int i1 = value.indexOf("]");
                         if (i >= 0 && i1 > i + 1) {
