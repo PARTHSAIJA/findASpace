@@ -13,8 +13,8 @@ public class RoomBean implements Parcelable {
     private String closeTime;
     private boolean blocked;
 
-    public RoomBean() {
-    }
+//    public RoomBean() {
+//    }
 
     public RoomBean(String roomName, String unitNo, int maxCap, String openTime, String closeTime, boolean blocked) {
         this.roomName = roomName;
