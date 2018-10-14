@@ -8,7 +8,7 @@ public class RoomRecord {
     public Integer NoOfSeatsAvaliable;
     public Integer NoOfPeopleInSpace;
 
-    public RoomRecord(String buildingNo, String levelNo, Integer roomNo, Integer noOfSeatsAvaliable, Integer noOfPeopleInSpace){
+    public RoomRecord(String buildingNo, String levelNo, Integer roomNo, Integer noOfSeatsAvaliable, Integer noOfPeopleInSpace) {
         this.BuildingNo = buildingNo;
         this.LevelNo = levelNo;
         this.RoomNo = roomNo;
@@ -55,7 +55,8 @@ public class RoomRecord {
     public void setNoOfPeopleInSpace(Integer noOfPeopleInSpace) {
         NoOfPeopleInSpace = noOfPeopleInSpace;
     }
-}
+
     public Integer placesLeft() {
         return this.NoOfSeatsAvaliable - this.NoOfPeopleInSpace;
     }
+}

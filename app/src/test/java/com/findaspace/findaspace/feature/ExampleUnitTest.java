@@ -105,14 +105,14 @@ public class ExampleUnitTest {
         assertEquals(testPlaces,expect);
     }
     @Test
-    public void testRoomrecordNoPlaces(){
+    public void testRoomRecordNoPlaces(){
         String testBuildingNo = "11";
         String testLvlNo = "6";
         int testRoomNo = 10;
-        int testNoOfSeatsAvaliable = 20;
+        int testNoOfSeatsAvailiable = 20;
         int testNoOfPeopleInSpace = 20;
 
-        RoomRecord testRoom = new RoomRecord(testBuildingNo,testLvlNo,testRoomNo,testNoOfSeatsAvaliable,testNoOfPeopleInSpace);
+        RoomRecord testRoom = new RoomRecord(testBuildingNo,testLvlNo,testRoomNo,testNoOfSeatsAvailiable,testNoOfPeopleInSpace);
 
         Integer expect = 0;
         Integer testPlaces = testRoom.placesLeft();
@@ -133,28 +133,28 @@ public class ExampleUnitTest {
 //
 //    }
 
-    @Test
-    public void testBlockedRoom(){
-        String testRoomName = "Room1";
-        String testUnitNo = "Unit1";
-        int testMaxCap = 20;
-        String testOpenTime = "1200";
-        String testCloseTime = "1400";
-        boolean testBlocked = true;
-
-        RoomBean testRoom = RoomBean.RoomBean(testRoomName, testUnitNo, testMaxCap, testOpenTime, testCloseTime, testBlocked);
-
-        // Test get and set functions
-        boolean expect = true;
-        boolean actual = testRoom.isBlocked();
-        assertEquals(expect, actual);
-
-        // Test blocking function
-        testRoom.setBlocked(false);
-        expect = false;
-        actual = testRoom.isBlocked();
-        assertEquals(expect, actual);
-
-    }
+//    @Test
+//    public void testBlockedRoom(){
+//        String testRoomName = "Room1";
+//        String testUnitNo = "Unit1";
+//        int testMaxCap = 20;
+//        String testOpenTime = "1200";
+//        String testCloseTime = "1400";
+//        boolean testBlocked = true;
+//
+//        RoomBean testRoom = RoomBean.RoomBean(testRoomName, testUnitNo, testMaxCap, testOpenTime, testCloseTime, testBlocked);
+//
+//        // Test get and set functions
+//        boolean expect = true;
+//        boolean actual = testRoom.isBlocked();
+//        assertEquals(expect, actual);
+//
+//        // Test blocking function
+//        testRoom.setBlocked(false);
+//        expect = false;
+//        actual = testRoom.isBlocked();
+//        assertEquals(expect, actual);
+//
+//    }
 
 }
