@@ -56,3 +56,6 @@ public class RoomRecord {
         NoOfPeopleInSpace = noOfPeopleInSpace;
     }
 }
+    public Integer placesLeft() {
+        return this.NoOfSeatsAvaliable - this.NoOfPeopleInSpace;
+    }

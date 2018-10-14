@@ -102,4 +102,9 @@ public class RoomModel {
 
         void onGetAvailableRoomsFail();
     }
+
+    public boolean callCompareDate(String dateTest){
+        return compareDate(dateTest);
+    }
 }
+
