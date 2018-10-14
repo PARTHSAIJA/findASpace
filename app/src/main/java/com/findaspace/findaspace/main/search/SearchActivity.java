@@ -41,6 +41,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);//Getting the instance of Spinner and applying OnItemSelectedListener on it
         mNoSeatEt = (EditText) findViewById(R.id.txtNoOfSeats);
+//        mNoSeatEt = (EditText) findViewById(6);
         setBuilding(buildingNo);
         submitButton();
     }
