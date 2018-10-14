@@ -1,12 +1,13 @@
 package com.findaspace.findaspace.main.room;
 
-import android.util.Log;
-
-import com.findaspace.findaspace.base.BaseView;
 import com.findaspace.findaspace.entity.RoomBean;
 
 import java.util.List;
 
+/**
+ *
+ *
+ */
 public class RoomPresenterImpl implements IRoomPresenter {
 
     private static final String TAG = RoomPresenterImpl.class.getSimpleName();
@@ -25,40 +26,64 @@ public class RoomPresenterImpl implements IRoomPresenter {
         mRoomModel = null;
     }
 
+    /**
+     *
+     */
     @Override
-    public void getAvailableRooms() {
-        mRoomModel.getAvailableRooms(new RoomModel.OnGetAvailableRoomsCallBack() {
+    public void getAvailableRooms(int noSeat) {
+        mView.showLoadingDialog();
+        mRoomModel.getAvailableRooms(noSeat, new RoomModel.OnGetAvailableRoomsCallBack() {
             @Override
             public void onGetAvailableRoomsSuccess(List<RoomBean> availableRooms) {
                 if (availableRooms.size() <= 0) {
-                    mView.showNullView();
+                    //
+                    if (mView != null) {
+                        mView.showNullView();
+                        mView.dismissLoadingDialog();
+                    }
                 } else {
-                    mView.showRoomView(availableRooms);
+                    //
+                    if (mView != null) {
+                        mView.showRoomView(availableRooms);
+                        mView.dismissLoadingDialog();
+                    }
                 }
             }
 
             @Override
             public void onGetAvailableRoomsFail() {
+                //
                 mView.showLoadFailView();
+                mView.dismissLoadingDialog();
             }
         });
     }
 
+    /**
+     *
+     */
     @Override
     public void getRooms() {
+        mView.showLoadingDialog();
         mRoomModel.getRooms(new RoomModel.OnGetRoomsCallback() {
             @Override
             public void onGetRoomsSuccess(List<RoomBean> rooms) {
                 if (rooms.size() <= 0) {
+                    //
                     mView.showNullView();
+                    mView.dismissLoadingDialog();
                 } else {
+                    //
                     mView.showRoomView(rooms);
+                    mView.dismissLoadingDialog();
                 }
             }
 
             @Override
             public void onGetRoomsFail() {
+                //
                 mView.showLoadFailView();
+                mView.dismissLoadingDialog();
             }
         });
     }

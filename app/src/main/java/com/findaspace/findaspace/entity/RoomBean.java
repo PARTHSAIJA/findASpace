@@ -4,7 +4,8 @@ package com.findaspace.findaspace.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
+/**
+ */
 public class RoomBean implements Parcelable {
     private String roomName;
     private String unitNo;
@@ -12,6 +13,7 @@ public class RoomBean implements Parcelable {
     private String openTime;
     private String closeTime;
     private boolean blocked;
+    private int personNumber;
 
     public RoomBean() {
     }
@@ -32,6 +34,7 @@ public class RoomBean implements Parcelable {
         openTime = in.readString();
         closeTime = in.readString();
         blocked = in.readByte() != 0;
+        personNumber = in.readInt();
     }
 
     public static final Creator<RoomBean> CREATOR = new Creator<RoomBean>() {
@@ -94,6 +97,14 @@ public class RoomBean implements Parcelable {
         this.blocked = blocked;
     }
 
+    public int getPersonNumber() {
+        return personNumber;
+    }
+
+    public void setPersonNumber(int personNumber) {
+        this.personNumber = personNumber;
+    }
+
     @Override
     public String toString() {
         return "RoomBean{" +
@@ -103,6 +114,7 @@ public class RoomBean implements Parcelable {
                 ", openTime='" + openTime + '\'' +
                 ", closeTime='" + closeTime + '\'' +
                 ", blocked=" + blocked +
+                ", personNumber=" + personNumber +
                 '}';
     }
 
@@ -119,5 +131,6 @@ public class RoomBean implements Parcelable {
         dest.writeString(openTime);
         dest.writeString(closeTime);
         dest.writeByte((byte) (blocked ? 1 : 0));
+        dest.writeInt(personNumber);
     }
 }

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.findaspace.findaspace.main.login.LoginActivity;
 
-public class BaseActivity extends AppCompatActivity implements BaseView {
+public class  BaseActivity extends AppCompatActivity implements BaseView {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

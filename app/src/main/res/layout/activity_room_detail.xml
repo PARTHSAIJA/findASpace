@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textColor="@color/colorBlue"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -20,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textColor="@color/colorBlue"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/room_detail_name_tv" />
 
     <TextView
@@ -28,7 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textColor="@color/colorBlue"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/room_unit_no_tv" />
 
     <TextView
@@ -36,7 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textColor="@color/colorBlue"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/room_max_cap_tv" />
 
     <TextView
@@ -44,7 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textColor="@color/colorBlue"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/room_open_time_tv" />
 
     <TextView
@@ -52,7 +57,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textColor="@color/colorBlue"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/room_block_switch"
         app:layout_constraintTop_toBottomOf="@id/room_close_time_tv" />
@@ -68,12 +74,23 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/room_block_tv" />
 
+    <TextView
+        android:id="@+id/room_person_number_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintTop_toBottomOf="@id/room_block_tv" />
+
     <Button
         android:id="@+id/room_confirm_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="confirm"
+        android:textSize="20sp"
+        android:text="@string/confirm"
         android:textAllCaps="false"
+        android:textColor="@color/colorBlack"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent" />
 </android.support.constraint.ConstraintLayout>

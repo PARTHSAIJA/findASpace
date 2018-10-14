@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -14,6 +13,7 @@ import android.widget.TimePicker;
 
 import com.findaspace.findaspace.app.R;
 import com.findaspace.findaspace.base.BaseActivity;
+import com.findaspace.findaspace.base.FindASpaceApplication;
 import com.findaspace.findaspace.entity.RoomBean;
 import com.findaspace.findaspace.main.room.RoomActivity;
 
@@ -24,10 +24,17 @@ import butterknife.OnClick;
 
 /**
  * Room Detail
- * display available room data
  */
 public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetailPresenter> implements IRoomDetailView {
 
+    private static final String ROOM = "Room";
+    private static final String MAX_CAP = "Max Cap";
+    private static final String OPEN_TIME = "Open Time";
+    private static final String CLOSE_TIME = "Close Time";
+    private static final String STATUS_BLOCKED = "Status: Blocked";
+    private static final String STATUS_AVAILABLE = "Status: Available";
+    private static final String PEOPLE_COUNT = "People Count";
+    private static final String SENSOR_ROOM_UNIT_NO = "Sensor Room Unit No";
     @BindView(R.id.room_detail_name_tv)
     TextView mRoomDetailNameTv;
     @BindView(R.id.room_unit_no_tv)
@@ -40,6 +47,8 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
     TextView mRoomCloseTimeTv;
     @BindView(R.id.room_block_tv)
     TextView mRoomBlockTv;
+    @BindView(R.id.room_person_number_tv)
+    TextView mRoomPersonNumberTv;
     @BindView(R.id.room_block_switch)
     Switch mRoomBlockSwitch;
     @BindView(R.id.room_confirm_btn)
@@ -49,13 +58,15 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
     private Calendar mCalendar;
     private TimePickerDialog mOpenTimePickerDialog;
     private TimePickerDialog mCloseTimePickerDialog;
+    private boolean mShowModifyView;
 
     @Override
     protected void initEvent() {
         mRoomBlockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                buttonView.setText(isChecked ? "unAvailable" : "available");
+                // Switch
+                mRoomBlockTv.setText(isChecked ? STATUS_BLOCKED : "Status: Available");
             }
         });
     }
@@ -69,30 +80,46 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
             return;
         }
         Parcelable parcelableExtra = intent.getParcelableExtra(RoomActivity.ROOM_DETAIL);
-        boolean showModifyView = intent.getBooleanExtra(RoomActivity.ROOM_MODIFY, false);
-        if (showModifyView) {
+        mShowModifyView = intent.getBooleanExtra(RoomActivity.ROOM_MODIFY, false);
+        if (mShowModifyView) {
             //
             mRoomBlockSwitch.setVisibility(View.VISIBLE);
             mRoomConfirmBtn.setVisibility(View.VISIBLE);
         }
-
+        //
         mCalendar = Calendar.getInstance();
+        // set room data
         if (parcelableExtra instanceof RoomBean) {
             mRoom = (RoomBean) parcelableExtra;
-            mRoomDetailNameTv.setText("RoomName: " + mRoom.getRoomName());
-            mRoomUnitNoTv.setText("UnitNo: " + mRoom.getUnitNo());
-            mRoomMaxCapTv.setText("MaxCap: " + mRoom.getMaxCap());
+
+            //Format the room to UTS Room formatting (CB1104101 -> CB11.04.101)
+            String roomUnformatted = mRoom.getRoomName();
+            String roomBuilding = ((roomUnformatted).substring(2)).substring(0, Math.min((roomUnformatted).substring(2).length(), 2));
+            //Get just the level number
+            String roomLvl = ((roomUnformatted).substring(4)).substring(0, Math.min((roomUnformatted).substring(4).length(), 2));
+            //Get just the room
+            String roomNo = (roomUnformatted).substring(6);
+            String roomFormatted = "CB" + roomBuilding + "." + roomLvl + "." + roomNo;
+
+            mRoomDetailNameTv.setText(String.valueOf(ROOM + ": " + roomFormatted));
+            mRoomUnitNoTv.setText(SENSOR_ROOM_UNIT_NO + ": " + mRoom.getUnitNo());
+            mRoomMaxCapTv.setText(String.valueOf(MAX_CAP + ": " + mRoom.getMaxCap()));
             String openTime = mRoom.getOpenTime();
             String openTimeHour = openTime.substring(0, 2);
             String openTimeMin = openTime.substring(2, openTime.length());
-            mRoomOpenTimeTv.setText("OpenTime: " + openTimeHour + ":" + openTimeMin);
+            mRoomOpenTimeTv.setText(String.valueOf(OPEN_TIME + ": " + openTimeHour + ":" + openTimeMin));
             String closeTime = mRoom.getCloseTime();
             String closeTimeHour = closeTime.substring(0, 2);
             String closeTimeMin = closeTime.substring(2, openTime.length());
-            mRoomCloseTimeTv.setText("CloseTime: " + closeTimeHour + ":" + closeTimeMin);
+            mRoomCloseTimeTv.setText(String.valueOf(CLOSE_TIME + ": " + closeTimeHour + ":" + closeTimeMin));
             boolean blocked = mRoom.isBlocked();
             mRoomBlockSwitch.setChecked(blocked);
-            mRoomBlockTv.setText(blocked ? "Status: unAvailable" : "Status: available");
+            mRoomBlockTv.setText(blocked ? STATUS_BLOCKED : STATUS_AVAILABLE);
+            if (FindASpaceApplication.getInstance().mUserFlag != FindASpaceApplication.UserFlag.USER) {
+                mRoomPersonNumberTv.setText(String.format(PEOPLE_COUNT + ": %d", mRoom.getPersonNumber()));
+            }
+            //
+//            mPresenter.getCurRoomPersonNum(mRoom.getUnitNo());
         }
     }
 
@@ -110,11 +137,15 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.room_confirm_btn:
-                // modify room data
+                //
                 mPresenter.modifyRoomData(mRoom, mRoomBlockSwitch.isChecked());
                 break;
             case R.id.room_open_time_tv:
-                // open time select Dialog
+                if (!mShowModifyView) {
+                    //
+                    break;
+                }
+                //
                 if (mOpenTimePickerDialog == null) {
                     mOpenTimePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
                         @Override
@@ -129,7 +160,11 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
                 mOpenTimePickerDialog.show();
                 break;
             case R.id.room_close_time_tv:
-                // close time select Dialog
+                if (!mShowModifyView) {
+                    //
+                    break;
+                }
+                //
                 if (mCloseTimePickerDialog == null) {
                     mCloseTimePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
                         @Override
@@ -150,7 +185,17 @@ public class RoomDetailActivity extends BaseActivity<IRoomDetailView, IRoomDetai
 
     @Override
     public void modifyComplete() {
-        // finished modify
+
         finish();
+    }
+
+    /**
+     *
+     *
+     * @param personNumber
+     */
+    @Override
+    public void showCurRoomPersonNumber(int personNumber) {
+        mRoomPersonNumberTv.setText(String.format("personNumber: %d", personNumber));
     }
 }

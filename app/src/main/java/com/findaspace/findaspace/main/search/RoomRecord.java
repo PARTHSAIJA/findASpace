@@ -55,4 +55,8 @@ public class RoomRecord {
     public void setNoOfPeopleInSpace(Integer noOfPeopleInSpace) {
         NoOfPeopleInSpace = noOfPeopleInSpace;
     }
+
+    public Integer placesLeft() {
+        return this.NoOfSeatsAvaliable - this.NoOfPeopleInSpace;
+    }
 }

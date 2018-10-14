@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/available_room_tv"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:gravity="center_vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:textColor="@color/colorBlue" />
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/available_room_tv"
+        android:background="?android:attr/listDivider"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        android:textColor="@color/colorBlue"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+</LinearLayout>

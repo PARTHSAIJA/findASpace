@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class UTSRooms{
+public class UTSRooms {
 
     private static final String TAG = "SearchActivity";
 
@@ -47,7 +47,7 @@ public class UTSRooms{
                 Log.d(TAG, "Starting search");
                 if (dataSnapshot.exists()) {
                     int i = 0;
-                    for(DataSnapshot d : dataSnapshot.getChildren()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
                         Log.d(TAG, "room:" + d.getKey());
                         rooms.add(d.getKey().toString());
                         i++;
@@ -56,6 +56,7 @@ public class UTSRooms{
                 String[] formattedRooms = FormatRooms(rooms);
                 activity.setBuilding(formattedRooms);
             }
+
             @Override
             public void onStart() {
                 //when starting
@@ -73,7 +74,10 @@ public class UTSRooms{
 
         String[] formattedRooms = new String[dbRoomsList.size()];
 
-        for(int i=0; i < dbRoomsList.size(); i++) {
+        for (int i = 0; i < dbRoomsList.size(); i++) {
+            if (dbRoomsList.get(i).length() < 6) {
+                continue;
+            }
             String roomBuilding = ((dbRoomsList.get(i)).substring(2)).substring(0, Math.min((dbRoomsList.get(i)).substring(2).length(), 2));
             String roomLvl = ((dbRoomsList.get(i)).substring(4)).substring(0, Math.min((dbRoomsList.get(i)).substring(4).length(), 2));
             String roomNo = (dbRoomsList.get(i)).substring(6);
