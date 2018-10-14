@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
-    tools:context="com.findaspace.findaspace.main.search.SearchActivity">
+    tools:context=".MainActivity">
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -24,15 +24,15 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="196dp"
-        android:layout_height="32dp"
+        android:layout_width="146dp"
+        android:layout_height="29dp"
         android:text="No Of Seats Required"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.232"
+        app:layout_constraintHorizontal_bias="0.205"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.265" />
+        app:layout_constraintVertical_bias="0.273" />
 
     <Spinner
         android:id="@+id/spinnerBuilding"
@@ -44,8 +44,6 @@
         android:layout_marginRight="39dp"
         android:layout_marginStart="39dp"
         android:layout_marginTop="8dp"
-
-        android:background="@drawable/spinner_background"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,8 +83,7 @@
         android:layout_height="47dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="number"
-        android:maxLength="3"
+        android:inputType="textPersonName|number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
