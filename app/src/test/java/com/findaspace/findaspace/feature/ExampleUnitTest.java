@@ -50,6 +50,9 @@ import com.findaspace.findaspace.entity.RoomBean;
 
 import java.util.List;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 
 
 import org.junit.Test;
@@ -102,31 +105,77 @@ public class ExampleUnitTest {
         assertEquals(testPlaces,expect);
     }
     @Test
-    public void testRoomrecordNoPlaces(){
+    public void testRoomRecordNoPlaces(){
         String testBuildingNo = "11";
         String testLvlNo = "6";
         int testRoomNo = 10;
-        int testNoOfSeatsAvaliable = 20;
+        int testNoOfSeatsAvailiable = 20;
         int testNoOfPeopleInSpace = 20;
 
-        RoomRecord testRoom = new RoomRecord(testBuildingNo,testLvlNo,testRoomNo,testNoOfSeatsAvaliable,testNoOfPeopleInSpace);
+        RoomRecord testRoom = new RoomRecord(testBuildingNo,testLvlNo,testRoomNo,testNoOfSeatsAvailiable,testNoOfPeopleInSpace);
 
         Integer expect = 0;
         Integer testPlaces = testRoom.placesLeft();
         assertEquals(testPlaces,expect);
     }
 
+//    @Test
+//    public void testAdminModifyDeets(){
+//        String testBuildingNo = "11";
+//        String testLvlNo = "6";
+//        int testRoomNo = 10;
+//        int testNoOfSeatsAvaliable = 20;
+//        int testNoOfPeopleInSpace = 20;
+//
+//        RoomRecord testRoom = new RoomRecord(testBuildingNo,testLvlNo,testRoomNo,testNoOfSeatsAvaliable,testNoOfPeopleInSpace);
+//
+//        Integer expect = 0;
+//
+//    }
+
     @Test
-    public void testAdminModifyDeets(){
-        String testBuildingNo = "11";
-        String testLvlNo = "6";
-        int testRoomNo = 10;
-        int testNoOfSeatsAvaliable = 20;
-        int testNoOfPeopleInSpace = 20;
+    public void testBlockedRoom(){
+        String testRoomName = "Room1";
+        String testUnitNo = "Unit1";
+        int testMaxCap = 20;
+        String testOpenTime = "1200";
+        String testCloseTime = "1400";
+        boolean testBlocked = true;
 
-        RoomRecord testRoom = new RoomRecord(testBuildingNo,testLvlNo,testRoomNo,testNoOfSeatsAvaliable,testNoOfPeopleInSpace);
+        RoomBean testRoom = new RoomBean(testRoomName, testUnitNo, testMaxCap, testOpenTime, testCloseTime, testBlocked);
 
-        Integer expect = 0;
+        // Test get and set blocking functions
+        boolean expectBool = true;
+        boolean actualBool = testRoom.isBlocked();
+        assertEquals(expectBool, actualBool);
+
+        // Test blocking change
+        testRoom.setBlocked(false);
+        expectBool = false;
+        actualBool = testRoom.isBlocked();
+        assertEquals(expectBool, actualBool);
+
+        // Test Get and set maxCap for room
+        int expectInt = 20;
+        int actualInt = testRoom.getMaxCap();
+        assertEquals(expectInt,actualInt);
+
+        // Test maxCap change
+        expectInt = 27;
+        testRoom.setMaxCap(expectInt);
+        actualInt = testRoom.getMaxCap();
+        assertEquals(expectInt, actualInt);
+
+        // Test get room name
+        String expectString = testRoomName;
+        String actualString = testRoom.getRoomName();
+        assertEquals(expectString, actualString);
+
+        //Test change room name
+        expectString = "newRoom";
+        testRoom.setRoomName(expectString);
+        actualString = testRoom.getRoomName();
+        assertEquals(expectString,actualString);
 
     }
 
